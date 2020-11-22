@@ -5,6 +5,7 @@ import cz.whiterabbit.elements.MoveGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class MoveGeneratorTest {
 
     TestBoards testBoards = new TestBoards();
@@ -252,121 +253,6 @@ public class MoveGeneratorTest {
         }else{
             System.out.println("Test FAILED  ::  Given result : " + result + " Expected result : " + expectedResult);
         }
-    }
-
-    /**
-     * Test of the method getMovesFromPosition
-     */
-    public void getMovesFromPositionTest(){
-        MoveGenerator moveGenerator = new MoveGenerator();
-        List<byte[]> expected = new ArrayList<>();
-        //testTestMethod();
-        System.out.println("TEST BASIC MOVES WITH NO JUMP");
-
-        expected.add(new byte[]{56,-1,0,57,0,-1});
-        expected.add(new byte[]{56,-1,0,48,0,-1});
-        expected.add(new byte[]{56,-1,0,49,0,-1});
-        System.out.println("Player in the right left bottom corner");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)56, testBoard4, null), expected);
-        expected.clear();
-        expected.add(new byte[]{59,-1,0,58,0,-1});
-        expected.add(new byte[]{59,-1,0,60,0,-1});
-        expected.add(new byte[]{59,-1,0,50,0,-1});
-        expected.add(new byte[]{59,-1,0,51,0,-1});
-        expected.add(new byte[]{59,-1,0,52,0,-1});
-        System.out.println("Player in the bottom no restrictions");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)59, testBoard4, null), expected);
-        expected.clear();
-        expected.add(new byte[]{63,-1,0,62,0,-1});
-        expected.add(new byte[]{63,-1,0,55,0,-1});
-        expected.add(new byte[]{63,-1,0,54,0,-1});
-        System.out.println("Player in the bottom right corner");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)63, testBoard4, null), expected);
-        expected.clear();
-        expected.add(new byte[]{0,-1,0,1,0,-1});
-        System.out.println("Player in the upper left corner");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)0, testBoard4, null), expected);
-        expected.clear();
-        expected.add(new byte[]{3,-1,0,2,0,-1});
-        expected.add(new byte[]{3,-1,0,4,0,-1});
-        System.out.println("Player in the upper field");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)3, testBoard4, null), expected);
-        expected.clear();
-        expected.add(new byte[]{7,-1,0,6,0,-1});
-        System.out.println("Player in the upper right corner");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)7, testBoard4, null), expected);
-        System.out.println("FORWARD ONLY JUMPS");
-        expected.clear();
-        expected.add(new byte[]{59,-1,0,51,1,0,43,0,-1});
-        System.out.println("single forward jump");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)59, testBoard5, null), expected);
-        expected.clear();
-        expected.add(new byte[]{63,-1,0,55,1,0,47,0,-1,47,-1,0,39,1,0,31,0,-1});
-        System.out.println("2-chain forward jump");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)63, testBoard5, null), expected);
-        expected.clear();
-        expected.add(new byte[]{56,-1,0,48,1,0,40,0,-1,40,-1,0,32,1,0,24,0,-1,24,-1,0,16,1,0,8,0,-1});
-        System.out.println("3-chain forward jump");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)56, testBoard5, null), expected);
-        expected.clear();
-        expected.add(new byte[]{56,-1,0,48,1,0,40,0,-1,40,-1,0,41,1,0,42,0,-1,42,-1,0,43,1,0,44,0,-1,44,-1,0,37,1,0,30,0,-1,30,-1,0,21,1,0,12,0,-1,12,-1,0,11,1,0,10,0,-1});
-        //                      56,-1,0,48,1,0,40,0,-1,40,-1,0,41,1,0,42,0,-1,42,-1,0,43,1,0,44,0,-1,
-        System.out.println("multi-chain multi-directive one-choice jump ");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)56, testBoard6, null), expected);
-        expected.clear();
-        expected.add(new byte[]{44,-1,0,37,1,0,30,0,-1,30,-1,0,21,1,0,12,0,-1,12,-1,0,11,1,0,10,0,-1});
-        System.out.println("multi-chain multi-directive one-choice jump ");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)44, testBoard7, null), expected);
-        expected.clear();
-        expected.add(new byte[]{59,-1,0,51,1,0,43,0,-1,43,-1,0,44,1,0,45,0,-1,45,-1,0,36,1,0,27,0,-1});
-        expected.add(new byte[]{59,-1,0,51,1,0,43,0,-1,43,-1,0,44,1,0,45,0,-1,45,-1,0,38,1,0,31,0,-1});
-        expected.add(new byte[]{59,-1,0,51,1,0,43,0,-1,43,-1,0,44,1,0,45,0,-1,45,-1,0,37,1,0,29,0,-1});
-        expected.add(new byte[]{59,-1,0,51,1,0,43,0,-1,43,-1,0,44,1,0,45,0,-1,45,-1,0,46,1,0,47,0,-1,47,-1,0,38,1,0,29,0,-1});
-        expected.add(new byte[]{59,-1,0,51,1,0,43,0,-1,43,-1,0,42,1,0,41,0,-1,41,-1,0,33,1,0,25,0,-1});
-        expected.add(new byte[]{59,-1,0,51,1,0,43,0,-1,43,-1,0,42,1,0,41,0,-1,41,-1,0,34,1,0,27,0,-1});
-        expected.add(new byte[]{59,-1,0,51,1,0,43,0,-1,43,-1,0,36,1,0,29,0,-1});
-        expected.add(new byte[]{59,-1,0,51,1,0,43,0,-1,43,-1,0,34,1,0,25,0,-1});
-
-        System.out.println("multi-chain multi-directive multi-choice jump ");
-        testPosition(moveGenerator.gerMovesFromPosition((byte)59, testBoard8, null), expected);
-
-
-
-
-    }
-
-    /**
-     * Helper method, test functionality of the getMovesFromPositionTest
-     */
-    private void testTestMethod() {
-        List<byte[]> test1 = new ArrayList<>();
-        test1.add(new byte[]{1,2,3,4,5,6,7,8,9});
-        test1.add(new byte[]{2,3,4,5,6,7,8,9,10});
-        List<byte[]> test2 = new ArrayList<>();
-        test2.add(new byte[]{2,3,4,5,6,7,8,9,10});
-        test2.add(new byte[]{1,2,3,4,5,6,7,8,9});
-        List<byte[]> test3 = new ArrayList<>();
-        test3.add(new byte[]{2,3,4,5,6,7,8,9,10});
-        test3.add(new byte[]{1,2,3,4,5,6,7,8,9});
-        test3.add(new byte[]{1,2,3,4,5,6,7,8,9});
-        List<byte[]> test4 = new ArrayList<>();
-        test4.add(new byte[]{1,2,3,4,5,6,7,8,9});
-        test4.add(new byte[]{1,2,3,4,5,6,7,8,9});
-        List<byte[]> test5 = new ArrayList<>();
-        test5.add(new byte[]{6,7,8,9,10,11,12,13,14});
-        test5.add(new byte[]{6,7,8,9,10,11,12,13,14});
-
-
-        System.out.println("test identical list should pass");
-        testPosition(test1, test1);
-        System.out.println("test two list with same elements in different order should pass");
-        testPosition(test1, test2);
-        System.out.println("different number of elements should fail");
-        testPosition(test2, test3);
-        System.out.println("one element matching other not should fail");
-        testPosition(test2, test4);
-        System.out.println("All element are different");
-        testPosition(test2, test5);
     }
 
     /**

@@ -6,7 +6,7 @@ import java.util.List;
 
 //todo: both methods can be refactored to be more simple, look at it after testing if there is still time
 public class MoveGenerator {
-    boolean log = true;
+    boolean log = false;
 
     public List<byte[]> gerMovesFromPosition(byte position, byte[] board, byte[] initialMove){
         //System.out.println("Begin search from position : " + position + " with initial move : " + initialMove);
@@ -499,5 +499,7 @@ public class MoveGenerator {
 
         return toReturn;
     }
+
+
 
 }
