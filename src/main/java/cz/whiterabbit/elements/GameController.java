@@ -1,5 +1,7 @@
 package cz.whiterabbit.elements;
 
+import cz.whiterabbit.elements.movegenerator.MoveGenerator;
+
 public class GameController {
     Board board;
     MoveGenerator moveGenerator;
