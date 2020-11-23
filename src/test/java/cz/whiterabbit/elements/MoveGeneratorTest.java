@@ -20,8 +20,8 @@ class MoveGeneratorTest {
     }
 
     @Nested
-    @DisplayName("getMovesFromPosition test")
-    class getMovesFromPosition {
+    @DisplayName("getMovesFromPositionRegular test")
+    class getMovesFromPositionRegular {
 
         @Nested
         @DisplayName("NO JUMPS")
@@ -35,7 +35,7 @@ class MoveGeneratorTest {
                 expectedMoves.add(new byte[]{56, -1, 0, 57, 0, -1});
                 expectedMoves.add(new byte[]{56, -1, 0, 48, 0, -1});
                 expectedMoves.add(new byte[]{56, -1, 0, 49, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 56, testBoards.getTestBoard4(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 56, testBoards.getTestBoard4(), null);
                 compareLists(expectedMoves, given);
             }
 
@@ -49,7 +49,7 @@ class MoveGeneratorTest {
                 expectedMoves.add(new byte[]{59, -1, 0, 50, 0, -1});
                 expectedMoves.add(new byte[]{59, -1, 0, 51, 0, -1});
                 expectedMoves.add(new byte[]{59, -1, 0, 52, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 59, testBoards.getTestBoard4(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 59, testBoards.getTestBoard4(), null);
                 compareLists(expectedMoves, given);
             }
 
@@ -61,7 +61,7 @@ class MoveGeneratorTest {
                 expectedMoves.add(new byte[]{63, -1, 0, 62, 0, -1});
                 expectedMoves.add(new byte[]{63, -1, 0, 55, 0, -1});
                 expectedMoves.add(new byte[]{63, -1, 0, 54, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 63, testBoards.getTestBoard4(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 63, testBoards.getTestBoard4(), null);
                 compareLists(expectedMoves, given);
             }
 
@@ -71,7 +71,7 @@ class MoveGeneratorTest {
 
                 List<byte[]> expectedMoves = new ArrayList<>();
                 expectedMoves.add(new byte[]{0, -1, 0, 1, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 0, testBoards.getTestBoard4(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 0, testBoards.getTestBoard4(), null);
                 compareLists(expectedMoves, given);
             }
 
@@ -82,7 +82,7 @@ class MoveGeneratorTest {
                 List<byte[]> expectedMoves = new ArrayList<>();
                 expectedMoves.add(new byte[]{3, -1, 0, 2, 0, -1});
                 expectedMoves.add(new byte[]{3, -1, 0, 4, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 3, testBoards.getTestBoard4(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 3, testBoards.getTestBoard4(), null);
                 compareLists(expectedMoves, given);
             }
 
@@ -92,7 +92,7 @@ class MoveGeneratorTest {
 
                 List<byte[]> expectedMoves = new ArrayList<>();
                 expectedMoves.add(new byte[]{7, -1, 0, 6, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 7, testBoards.getTestBoard4(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 7, testBoards.getTestBoard4(), null);
                 compareLists(expectedMoves, given);
             }
 
@@ -107,7 +107,7 @@ class MoveGeneratorTest {
 
                 List<byte[]> expectedMoves = new ArrayList<>();
                 expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 59, testBoards.getTestBoard5(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 59, testBoards.getTestBoard5(), null);
                 compareLists(expectedMoves, given);
             }
 
@@ -117,7 +117,7 @@ class MoveGeneratorTest {
 
                 List<byte[]> expectedMoves = new ArrayList<>();
                 expectedMoves.add(new byte[]{63, -1, 0, 55, 1, 0, 47, 0, -1, 47, -1, 0, 39, 1, 0, 31, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 63, testBoards.getTestBoard5(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 63, testBoards.getTestBoard5(), null);
                 compareLists(expectedMoves, given);
             }
 
@@ -127,7 +127,7 @@ class MoveGeneratorTest {
 
                 List<byte[]> expectedMoves = new ArrayList<>();
                 expectedMoves.add(new byte[]{56, -1, 0, 48, 1, 0, 40, 0, -1, 40, -1, 0, 32, 1, 0, 24, 0, -1, 24, -1, 0, 16, 1, 0, 8, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 56, testBoards.getTestBoard5(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 56, testBoards.getTestBoard5(), null);
                 compareLists(expectedMoves, given);
             }
 
@@ -137,7 +137,7 @@ class MoveGeneratorTest {
 
                 List<byte[]> expectedMoves = new ArrayList<>();
                 expectedMoves.add(new byte[]{56, -1, 0, 48, 1, 0, 40, 0, -1, 40, -1, 0, 41, 1, 0, 42, 0, -1, 42, -1, 0, 43, 1, 0, 44, 0, -1, 44, -1, 0, 37, 1, 0, 30, 0, -1, 30, -1, 0, 21, 1, 0, 12, 0, -1, 12, -1, 0, 11, 1, 0, 10, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 56, testBoards.getTestBoard6(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 56, testBoards.getTestBoard6(), null);
                 compareLists(expectedMoves, given);
             }
 
@@ -147,7 +147,7 @@ class MoveGeneratorTest {
 
                 List<byte[]> expectedMoves = new ArrayList<>();
                 expectedMoves.add(new byte[]{44, -1, 0, 37, 1, 0, 30, 0, -1, 30, -1, 0, 21, 1, 0, 12, 0, -1, 12, -1, 0, 11, 1, 0, 10, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 44, testBoards.getTestBoard7(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 44, testBoards.getTestBoard7(), null);
                 compareLists(expectedMoves, given);
             }
 
@@ -164,7 +164,7 @@ class MoveGeneratorTest {
                 expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1, 43, -1, 0, 42, 1, 0, 41, 0, -1, 41, -1, 0, 34, 1, 0, 27, 0, -1});
                 expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1, 43, -1, 0, 36, 1, 0, 29, 0, -1});
                 expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1, 43, -1, 0, 34, 1, 0, 25, 0, -1});
-                List<byte[]> given = moveGenerator.gerMovesFromPosition((byte) 59, testBoards.getTestBoard8(), null);
+                List<byte[]> given = moveGenerator.gerMovesFromPositionRegular((byte) 59, testBoards.getTestBoard8(), null);
                 compareLists(expectedMoves, given);
             }
         }
@@ -206,7 +206,6 @@ class MoveGeneratorTest {
         }
     }
 
-
     @Test
     @DisplayName("getAvailableSurroundings")
     void getAvailableSurroundings() {
@@ -236,57 +235,364 @@ class MoveGeneratorTest {
 
     @Test
     @DisplayName("get enemiesTest")
-    void getEnemies(){
+    void getEnemies() {
         assertAll(
-                () -> assertArrayEquals(moveGenerator.getEnemies(new byte[] {50, 51, 52, 58, 60}, testBoards.getTestBoard2(), false),
+                () -> assertArrayEquals(moveGenerator.getEnemies(new byte[]{50, 51, 52, 58, 60}, testBoards.getTestBoard2(), false),
                         new byte[]{}, "Negative player no enemies"),
-                () -> assertArrayEquals(moveGenerator.getEnemies(new byte[] {34, 35, 36, 42, 44}, testBoards.getTestBoard2(), false),
-                        new byte[]{34,35,36}, "Negative player three enemies"),
+                () -> assertArrayEquals(moveGenerator.getEnemies(new byte[]{34, 35, 36, 42, 44}, testBoards.getTestBoard2(), false),
+                        new byte[]{34, 35, 36}, "Negative player three enemies"),
                 () -> assertArrayEquals(moveGenerator.getEnemies(new byte[]{11, 12, 13, 19, 21}, testBoards.getTestBoard2(), false),
                         new byte[]{12}, "Negative player three enemies"),
                 () -> assertArrayEquals(moveGenerator.getEnemies(new byte[]{11, 13, 19, 20, 21}, testBoards.getTestBoard2(), true),
-                        new byte[]{11,13,19,20,21}, "positive player five enemies"),
+                        new byte[]{11, 13, 19, 20, 21}, "positive player five enemies"),
                 () -> assertArrayEquals(moveGenerator.getEnemies(new byte[]{34, 36, 42, 43, 44}, testBoards.getTestBoard2(), true),
-                        new byte[]{42,43,44}, "positive player five enemies")
+                        new byte[]{42, 43, 44}, "positive player five enemies")
         );
     }
 
     @Test
     @DisplayName("canBeCaptured")
-    void canBeCaptured(){
+    void canBeCaptured() {
         assertAll(
-                () ->  assertEquals(moveGenerator.canBeCaptured((byte)3, (byte)11, testBoards.getTestBoard3()),19),
-                () ->  assertEquals(moveGenerator.canBeCaptured((byte)3, (byte)2, testBoards.getTestBoard3()),1),
-                () ->  assertEquals(moveGenerator.canBeCaptured((byte)3, (byte)4, testBoards.getTestBoard3()),5),
-                () ->  assertEquals(moveGenerator.canBeCaptured((byte)3, (byte)10, testBoards.getTestBoard3()),17),
-                () ->  assertEquals(moveGenerator.canBeCaptured((byte)3, (byte)12, testBoards.getTestBoard3()),21),
-                () ->  assertEquals(moveGenerator.canBeCaptured((byte)59, (byte)51, testBoards.getTestBoard3()),-1),
-                () ->  assertEquals(moveGenerator.canBeCaptured((byte)59, (byte)58, testBoards.getTestBoard3()),-1),
-                () ->  assertEquals(moveGenerator.canBeCaptured((byte)59, (byte)60, testBoards.getTestBoard3()),-1),
-                () ->  assertEquals(moveGenerator.canBeCaptured((byte)59, (byte)50, testBoards.getTestBoard3()),-1),
-                () ->  assertEquals(moveGenerator.canBeCaptured((byte)59, (byte)52, testBoards.getTestBoard3()),-1)
+                () -> assertEquals(moveGenerator.canBeCaptured((byte) 3, (byte) 11, testBoards.getTestBoard3()), 19),
+                () -> assertEquals(moveGenerator.canBeCaptured((byte) 3, (byte) 2, testBoards.getTestBoard3()), 1),
+                () -> assertEquals(moveGenerator.canBeCaptured((byte) 3, (byte) 4, testBoards.getTestBoard3()), 5),
+                () -> assertEquals(moveGenerator.canBeCaptured((byte) 3, (byte) 10, testBoards.getTestBoard3()), 17),
+                () -> assertEquals(moveGenerator.canBeCaptured((byte) 3, (byte) 12, testBoards.getTestBoard3()), 21),
+                () -> assertEquals(moveGenerator.canBeCaptured((byte) 59, (byte) 51, testBoards.getTestBoard3()), -1),
+                () -> assertEquals(moveGenerator.canBeCaptured((byte) 59, (byte) 58, testBoards.getTestBoard3()), -1),
+                () -> assertEquals(moveGenerator.canBeCaptured((byte) 59, (byte) 60, testBoards.getTestBoard3()), -1),
+                () -> assertEquals(moveGenerator.canBeCaptured((byte) 59, (byte) 50, testBoards.getTestBoard3()), -1),
+                () -> assertEquals(moveGenerator.canBeCaptured((byte) 59, (byte) 52, testBoards.getTestBoard3()), -1)
         );
     }
 
     @Test
     @DisplayName("getAvailableLandingPositions")
-    void getAvailableLandingPositions(){
+    void getAvailableLandingPositions() {
         assertAll(
-                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte)18,(byte)-9, testBoards.getGetLandingPositionsTestBoard()),
-                        new byte[]{0,9}),
-                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte)19,(byte)-8, testBoards.getGetLandingPositionsTestBoard()),
-                        new byte[]{3,11}),
-                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte)20,(byte)-7, testBoards.getGetLandingPositionsTestBoard()),
-                        new byte[]{6,13}),
-                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte)28,(byte)1, testBoards.getGetLandingPositionsTestBoard()),
+                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte) 18, (byte) -9, testBoards.getGetLandingPositionsTestBoard()),
+                        new byte[]{0, 9}),
+                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte) 19, (byte) -8, testBoards.getGetLandingPositionsTestBoard()),
+                        new byte[]{3, 11}),
+                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte) 20, (byte) -7, testBoards.getGetLandingPositionsTestBoard()),
+                        new byte[]{6, 13}),
+                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte) 28, (byte) 1, testBoards.getGetLandingPositionsTestBoard()),
                         new byte[]{}),
-                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte)36,(byte)9, testBoards.getGetLandingPositionsTestBoard()),
+                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte) 36, (byte) 9, testBoards.getGetLandingPositionsTestBoard()),
                         new byte[]{45}),
-                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte)35,(byte)8, testBoards.getGetLandingPositionsTestBoard()),
-                        new byte[]{43,51,59}),
-                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte)34,(byte)7, testBoards.getGetLandingPositionsTestBoard()),
-                        new byte[]{41,48})
+                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte) 35, (byte) 8, testBoards.getGetLandingPositionsTestBoard()),
+                        new byte[]{43, 51, 59}),
+                () -> assertArrayEquals(moveGenerator.getLandingLocations((byte) 34, (byte) 7, testBoards.getGetLandingPositionsTestBoard()),
+                        new byte[]{41, 48})
         );
+    }
+
+    @Nested
+    @DisplayName("getMovesFromPositionRoyal")
+    class getMovesFromPositionRoyal {
+        @Test
+        @DisplayName("multipleDecisionAndDirections")
+        void multipleDecisionAndDirections() {
+            List<byte[]> expectedMoves = new ArrayList<>();
+            expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 44, 0, -2, 44, -2, 0, 36, 1, 0, 28, 0, -2, 28, -2, 0, 25, 1, 0, 24, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 44, 0, -2, 44, -2, 0, 36, 1, 0, 20, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 44, 0, -2, 44, -2, 0, 36, 1, 0, 12, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 44, 0, -2, 44, -2, 0, 36, 1, 0, 4, 0, -2, 4, -2, 0, 25, 1, 0, 32, 0, -2});
+            List<byte[]> given = moveGenerator.getMovesFromPositionRoyal((byte) 60, testBoards.getGetMovesFromPositionRoyal3(), null);
+            //printLists(given, expectedMoves);
+            compareLists(expectedMoves, given);
+        }
+
+        @Test
+        @DisplayName("oneJumpMultipleLandings vertical")
+        void oneJumpMultipleLandings_vertical() {
+            List<byte[]> expectedMoves = new ArrayList<>();
+            expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 44, 0, -2,});
+            expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 36, 0, -2,});
+            expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 28, 0, -2,});
+            expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 20, 0, -2,});
+            expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 12, 0, -2,});
+            expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 4, 0, -2,});
+            List<byte[]> given = moveGenerator.getMovesFromPositionRoyal((byte) 60, testBoards.getOneJumpMultipleLandingVertical(), null);
+            //printLists(given, expectedMoves);
+            compareLists(expectedMoves, given);
+        }
+
+        @Test
+        @DisplayName("oneJumpMultipleLandings diagonal")
+        void oneJumpMultipleLandingsDiagonal() {
+            List<byte[]> expectedMoves = new ArrayList<>();
+            expectedMoves.add(new byte[]{60, -2, 0, 51, 1, 0, 42, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 51, 1, 0, 33, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 51, 1, 0, 24, 0, -2});
+            List<byte[]> given = moveGenerator.getMovesFromPositionRoyal((byte) 60, testBoards.getOneJumpMultipleLandingDiagonal(), null);
+            //printLists(given, expectedMoves);
+            compareLists(expectedMoves, given);
+        }
+
+        @Test
+        @DisplayName("oneJumpMultipleLandings horizontal")
+        void oneJumpMultipleLandingsHorizontal() {
+            List<byte[]> expectedMoves = new ArrayList<>();
+            expectedMoves.add(new byte[]{60, -2, 0, 59, 1, 0, 58, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 59, 1, 0, 57, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 59, 1, 0, 56, 0, -2});
+            List<byte[]> given = moveGenerator.getMovesFromPositionRoyal((byte) 60, testBoards.getOneJumpMultipleLandingHorizontal(), null);
+            //printLists(given, expectedMoves);
+            compareLists(expectedMoves, given);
+        }
+
+        @Test
+        @DisplayName("no Valid Enemies")
+        void noValidEnemies() {
+            List<byte[]> expectedMoves = new ArrayList<>();
+            expectedMoves.add(new byte[]{60, -2, 0, 51, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 42, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 52, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 44, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 36, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 61, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 62, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 53, 0, -2});
+            expectedMoves.add(new byte[]{60, -2, 0, 46, 0, -2});
+            List<byte[]> given = moveGenerator.getMovesFromPositionRoyal((byte) 60, testBoards.getNoValidEnemies(), null);
+            //printLists(given, expectedMoves);
+            compareLists(expectedMoves, given);
+        }
+
+
+    }
+
+    @Nested
+    @DisplayName("getMovesFromPosition")
+    class getMovesFromPosition {
+        @Nested
+        @DisplayName("ROYAL")
+        class Royal {
+
+            @Test
+            @DisplayName("multipleDecisionAndDirections")
+            void multipleDecisionAndDirections() {
+                List<byte[]> expectedMoves = new ArrayList<>();
+                expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 44, 0, -2, 44, -2, 0, 36, 1, 0, 28, 0, -2, 28, -2, 0, 25, 1, 0, 24, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 44, 0, -2, 44, -2, 0, 36, 1, 0, 20, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 44, 0, -2, 44, -2, 0, 36, 1, 0, 12, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 44, 0, -2, 44, -2, 0, 36, 1, 0, 4, 0, -2, 4, -2, 0, 25, 1, 0, 32, 0, -2});
+                List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 60, testBoards.getGetMovesFromPositionRoyal3());
+                //printLists(given, expectedMoves);
+                compareLists(expectedMoves, given);
+            }
+
+            @Test
+            @DisplayName("oneJumpMultipleLandings vertical")
+            void oneJumpMultipleLandings_vertical() {
+                List<byte[]> expectedMoves = new ArrayList<>();
+                expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 44, 0, -2,});
+                expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 36, 0, -2,});
+                expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 28, 0, -2,});
+                expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 20, 0, -2,});
+                expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 12, 0, -2,});
+                expectedMoves.add(new byte[]{60, -2, 0, 52, 1, 0, 4, 0, -2,});
+                List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 60, testBoards.getOneJumpMultipleLandingVertical());
+                //printLists(given, expectedMoves);
+                compareLists(expectedMoves, given);
+            }
+
+            @Test
+            @DisplayName("oneJumpMultipleLandings diagonal")
+            void oneJumpMultipleLandingsDiagonal() {
+                List<byte[]> expectedMoves = new ArrayList<>();
+                expectedMoves.add(new byte[]{60, -2, 0, 51, 1, 0, 42, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 51, 1, 0, 33, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 51, 1, 0, 24, 0, -2});
+                List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 60, testBoards.getOneJumpMultipleLandingDiagonal());
+                //printLists(given, expectedMoves);
+                compareLists(expectedMoves, given);
+            }
+
+            @Test
+            @DisplayName("oneJumpMultipleLandings horizontal")
+            void oneJumpMultipleLandingsHorizontal() {
+                List<byte[]> expectedMoves = new ArrayList<>();
+                expectedMoves.add(new byte[]{60, -2, 0, 59, 1, 0, 58, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 59, 1, 0, 57, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 59, 1, 0, 56, 0, -2});
+                List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 60, testBoards.getOneJumpMultipleLandingHorizontal());
+                //printLists(given, expectedMoves);
+                compareLists(expectedMoves, given);
+            }
+
+            @Test
+            @DisplayName("no Valid Enemies")
+            void noValidEnemies() {
+                List<byte[]> expectedMoves = new ArrayList<>();
+                expectedMoves.add(new byte[]{60, -2, 0, 51, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 42, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 52, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 44, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 36, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 61, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 62, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 53, 0, -2});
+                expectedMoves.add(new byte[]{60, -2, 0, 46, 0, -2});
+                List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 60, testBoards.getNoValidEnemies());
+                //printLists(given, expectedMoves);
+                compareLists(expectedMoves, given);
+            }
+
+        }
+
+        @Nested
+        @DisplayName("REGULAR")
+        class Regular{
+            @Nested
+            @DisplayName("NO JUMPS")
+            class noJumpsTest {
+
+                @Test
+                @DisplayName("upper right corner")
+                void basicMovesWithJump1() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{56, -1, 0, 57, 0, -1});
+                    expectedMoves.add(new byte[]{56, -1, 0, 48, 0, -1});
+                    expectedMoves.add(new byte[]{56, -1, 0, 49, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 56, testBoards.getTestBoard4());
+                    compareLists(expectedMoves, given);
+                }
+
+                @Test
+                @DisplayName("bottom no restrictions")
+                void basicMovesWithJump2() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{59, -1, 0, 58, 0, -1});
+                    expectedMoves.add(new byte[]{59, -1, 0, 60, 0, -1});
+                    expectedMoves.add(new byte[]{59, -1, 0, 50, 0, -1});
+                    expectedMoves.add(new byte[]{59, -1, 0, 51, 0, -1});
+                    expectedMoves.add(new byte[]{59, -1, 0, 52, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 59, testBoards.getTestBoard4());
+                    compareLists(expectedMoves, given);
+                }
+
+                @Test
+                @DisplayName("bottom right corner")
+                void basicMovesWithJump3() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{63, -1, 0, 62, 0, -1});
+                    expectedMoves.add(new byte[]{63, -1, 0, 55, 0, -1});
+                    expectedMoves.add(new byte[]{63, -1, 0, 54, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 63, testBoards.getTestBoard4());
+                    compareLists(expectedMoves, given);
+                }
+
+                @Test
+                @DisplayName("upper left corner")
+                void basicMovesWithJump4() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{0, -1, 0, 1, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 0, testBoards.getTestBoard4());
+                    compareLists(expectedMoves, given);
+                }
+
+                @Test
+                @DisplayName("upper field")
+                void basicMovesWithJump5() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{3, -1, 0, 2, 0, -1});
+                    expectedMoves.add(new byte[]{3, -1, 0, 4, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 3, testBoards.getTestBoard4());
+                    compareLists(expectedMoves, given);
+                }
+
+                @Test
+                @DisplayName("upper right corner")
+                void basicMovesWithJump6() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{7, -1, 0, 6, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 7, testBoards.getTestBoard4());
+                    compareLists(expectedMoves, given);
+                }
+
+            }
+
+            @Nested
+            @DisplayName("FORWARD ONLY JUMPS")
+            class ForwardOnly {
+                @Test
+                @DisplayName("single forward jump")
+                void basicMovesWithJump1() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 59, testBoards.getTestBoard5());
+                    compareLists(expectedMoves, given);
+                }
+
+                @Test
+                @DisplayName("2-chain forward jump")
+                void basicMovesWithJump2() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{63, -1, 0, 55, 1, 0, 47, 0, -1, 47, -1, 0, 39, 1, 0, 31, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 63, testBoards.getTestBoard5());
+                    compareLists(expectedMoves, given);
+                }
+
+                @Test
+                @DisplayName("3-chain forward jump")
+                void basicMovesWithJump3() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{56, -1, 0, 48, 1, 0, 40, 0, -1, 40, -1, 0, 32, 1, 0, 24, 0, -1, 24, -1, 0, 16, 1, 0, 8, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 56, testBoards.getTestBoard5());
+                    compareLists(expectedMoves, given);
+                }
+
+                @Test
+                @DisplayName("multi-chain multi-directive one-choice jump")
+                void basicMovesWithJump4() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{56, -1, 0, 48, 1, 0, 40, 0, -1, 40, -1, 0, 41, 1, 0, 42, 0, -1, 42, -1, 0, 43, 1, 0, 44, 0, -1, 44, -1, 0, 37, 1, 0, 30, 0, -1, 30, -1, 0, 21, 1, 0, 12, 0, -1, 12, -1, 0, 11, 1, 0, 10, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 56, testBoards.getTestBoard6());
+                    compareLists(expectedMoves, given);
+                }
+
+                @Test
+                @DisplayName("multi-chain multi-directive one-choice jump")
+                void basicMovesWithJump5() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{44, -1, 0, 37, 1, 0, 30, 0, -1, 30, -1, 0, 21, 1, 0, 12, 0, -1, 12, -1, 0, 11, 1, 0, 10, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 44, testBoards.getTestBoard7());
+                    compareLists(expectedMoves, given);
+                }
+
+                @Test
+                @DisplayName("multi-chain multi-directive multi-choice jump")
+                void basicMovesWithJump6() {
+
+                    List<byte[]> expectedMoves = new ArrayList<>();
+                    expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1, 43, -1, 0, 44, 1, 0, 45, 0, -1, 45, -1, 0, 36, 1, 0, 27, 0, -1});
+                    expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1, 43, -1, 0, 44, 1, 0, 45, 0, -1, 45, -1, 0, 38, 1, 0, 31, 0, -1});
+                    expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1, 43, -1, 0, 44, 1, 0, 45, 0, -1, 45, -1, 0, 37, 1, 0, 29, 0, -1});
+                    expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1, 43, -1, 0, 44, 1, 0, 45, 0, -1, 45, -1, 0, 46, 1, 0, 47, 0, -1, 47, -1, 0, 38, 1, 0, 29, 0, -1});
+                    expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1, 43, -1, 0, 42, 1, 0, 41, 0, -1, 41, -1, 0, 33, 1, 0, 25, 0, -1});
+                    expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1, 43, -1, 0, 42, 1, 0, 41, 0, -1, 41, -1, 0, 34, 1, 0, 27, 0, -1});
+                    expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1, 43, -1, 0, 36, 1, 0, 29, 0, -1});
+                    expectedMoves.add(new byte[]{59, -1, 0, 51, 1, 0, 43, 0, -1, 43, -1, 0, 34, 1, 0, 25, 0, -1});
+                    List<byte[]> given = moveGenerator.getMovesFromPosition((byte) 59, testBoards.getTestBoard8());
+                    compareLists(expectedMoves, given);
+                }
+            }
+        }
+
     }
 
 
@@ -297,6 +603,24 @@ class MoveGeneratorTest {
 
         for (int i = 0; i < l1.size(); i++) {
             assertArrayEquals(l1.get(i), l2.get(i));
+        }
+    }
+
+    private void printLists(List<byte[]> l1, List<byte[]> l2) {
+        System.out.println("Given");
+        for (byte[] ba : l1) {
+            for (byte b : ba) {
+                System.out.print(b + ", ");
+            }
+            System.out.println();
+        }
+
+        System.out.println("Expected");
+        for (byte[] ba : l2) {
+            for (byte b : ba) {
+                System.out.print(b + ", ");
+            }
+            System.out.println();
         }
     }
 

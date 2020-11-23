@@ -27,15 +27,21 @@ public class Board {
         return boardArr;
     }
 
-    public void applyMove(byte[] move){
+    public byte[] applyMove(byte[] move){
         for(int i = 0; i< move.length; i+=3){
-            boardArr[move[i]]=move[i+3];
+            boardArr[move[i]]=move[i+2];
         }
+        return getBoardArr();
     }
 
-    public void applyMove(Move move){
+    public byte[] applyMove(Move move){
         byte[] moveArr = move.getMoveArr();
         applyMove(moveArr);
+        return getBoardArr();
+    }
+
+    public void setBoard(byte[] boardArr){
+        this.boardArr = boardArr;
     }
 
 

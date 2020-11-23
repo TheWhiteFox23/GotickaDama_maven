@@ -17,14 +17,6 @@ public class TestBoards {
     private byte[] testBoard7 = new byte[]{0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,};
 
     private byte[] testBoard8 = new byte[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1,0,0,0,1,0,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,-1,0,0,0,0,};
-
-    //59,-1,0,51,1,0,43,0,-1,43,-1,0,44,1,0,45,0,-1,45-,1,0,36,1,0,27,0,-1
-    //59,-1,0,51,1,0,43,0,-1,43,-1,0,44,1,0,45,0,-1,45,-1,0,38,1,0,31,0,-1
-    //59,-1,0,51,1,0,43,0,-1,43,-1,0,44,1,0,45,0,-1,45,-1,0,37,1,0,29,0,-1
-    //59,-1,0,51,1,0,43,0,-1,43,-1,0,44,1,0,45,0,-1,45,-1,0,46,1,0,47,0,-1,47,-1,0,38,1,0,29,0,-1
-    //59,-1,0,51,1,0,43,0,-1,43,-1,0,42,1,0,41,0,-1,41,-1,0,33,1,0,25,0,-1
-    //59,-1,0,51,1,0,43,0,-1,43,-1,0,42,1,0,41,0,-1,41,-1,0,34,1,0,27,0,-1
-
     /*
     {   0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
@@ -90,6 +82,62 @@ public class TestBoards {
             0, 0, 0, 0,-2, 0, 0, 0,
     };
 
+    private byte[] getMovesFromPositionRoyal3 = new byte[]{
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 1, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 1, 0, 0, 0,
+            0, 0, 0, 0,-2, 0, 0, 0,
+    };
+
+    private byte[] oneJumpMultipleLandingVertical = new byte[]{
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 1, 0, 0, 0,
+            0, 0, 0, 0,-2, 0, 0, 0,
+    };
+
+    private byte[] oneJumpMultipleLandingDiagonal = new byte[]{
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 1, 0, 0, 0, 0,
+            0, 0, 0, 0,-2, 0, 0, 0,
+    };
+
+    private byte[] oneJumpMultipleLandingHorizontal = new byte[]{
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 1,-2, 0, 0, 0,
+    };
+
+    private byte[] noValidEnemies = new byte[]{
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0,
+            0, 1, 0, 0, 0, 0, 0, 1,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 1, 1,-2, 0, 0, 1,
+    };
+
+
 
 
     public byte[] getSurroundingsTestBoard() { return surroundingsTestBoard; }
@@ -117,4 +165,24 @@ public class TestBoards {
     }
 
     public byte[] getGetMovesFromPositionRoyal2() { return getMovesFromPositionRoyal2; }
+
+    public byte[] getGetMovesFromPositionRoyal3() {
+        return getMovesFromPositionRoyal3;
+    }
+
+    public byte[] getOneJumpMultipleLandingVertical() {
+        return oneJumpMultipleLandingVertical;
+    }
+
+    public byte[] getOneJumpMultipleLandingDiagonal() {
+        return oneJumpMultipleLandingDiagonal;
+    }
+
+    public byte[] getOneJumpMultipleLandingHorizontal() {
+        return oneJumpMultipleLandingHorizontal;
+    }
+
+    public byte[] getNoValidEnemies() {
+        return noValidEnemies;
+    }
 }

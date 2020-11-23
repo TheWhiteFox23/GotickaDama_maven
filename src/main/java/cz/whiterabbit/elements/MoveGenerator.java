@@ -6,13 +6,43 @@ import java.util.List;
 
 
 //todo: both methods can be refactored to be more simple, look at it after testing if there is still time
+
+//todo: Java Doc for all the methods (probably after refactoring)
+
+//todo: Separate into different classes (same interface)
 public class MoveGenerator {
     boolean log = false;
 
-    public List<byte[]> gerMovesFromPosition(byte position, byte[] board, byte[] initialMove){
-        //System.out.println("Begin search from position : " + position + " with initial move : " + initialMove);
+    /**
+     * Get all of the valid moves from given position (don't filter moves with most captures)
+     * @param position
+     * @param board
+     * @return
+     */
+    public List<byte[]> getMovesFromPosition(byte position, byte[] board){
         List<byte[]> moves = new ArrayList<>();
-        //type of value to check (positive or negative)
+        switch (Math.abs(board[position])){
+            case 1 : {
+                moves.addAll(gerMovesFromPositionRegular(position, board, null));
+                break;
+            }
+            case 2 :{
+                moves.addAll(getMovesFromPositionRoyal(position,board,null));
+                break;
+            }
+        }
+        return moves;
+    }
+
+    /**
+     * Get moves from given position for regular peaces
+     * @param position
+     * @param board
+     * @param initialMove
+     * @return
+     */
+    protected List<byte[]> gerMovesFromPositionRegular(byte position, byte[] board, byte[] initialMove){
+        List<byte[]> moves = new ArrayList<>();
 
         boolean positive;
         try{
@@ -111,9 +141,9 @@ public class MoveGenerator {
                             System.arraycopy(newMove, 0, newInitialMove, initialMove.length, newMove.length);
                             //System.out.println();
                             //System.out.println("Asking for new query from new position");
-                            List<byte[]> queryResult = gerMovesFromPosition(capturedEnemies[i+1], board, newInitialMove);
+                            List<byte[]> queryResult = gerMovesFromPositionRegular(capturedEnemies[i+1], board, newInitialMove);
                             //System.out.println(queryResult);
-                            moves.addAll(gerMovesFromPosition(capturedEnemies[i+1], board, newInitialMove));
+                            moves.addAll(gerMovesFromPositionRegular(capturedEnemies[i+1], board, newInitialMove));
                         }
                     }
                     if(!foundValidEnemy){
@@ -125,7 +155,7 @@ public class MoveGenerator {
                     for(int i = 0; i<capturedEnemies.length; i+=2){
                         byte[] newMove = new byte[]{position, activePeace, 0,capturedEnemies[i], board[capturedEnemies[i]], 0, capturedEnemies[i+1], board[capturedEnemies[i+1]], activePeace };
                         if(log)System.out.println("Asking for the query from the new point");
-                        moves.addAll(gerMovesFromPosition(capturedEnemies[i+1], board, newMove));
+                        moves.addAll(gerMovesFromPositionRegular(capturedEnemies[i+1], board, newMove));
                     }
                 }
             }
@@ -133,7 +163,15 @@ public class MoveGenerator {
         return moves;
     }
 
-    public boolean getPlayerType(byte position, byte[] board, byte[] initialMove) throws Exception {
+    /**
+     * Return boolean representing player type true-positive/false-negative
+     * @param position
+     * @param board
+     * @param initialMove
+     * @return
+     * @throws Exception
+     */
+    protected boolean getPlayerType(byte position, byte[] board, byte[] initialMove) throws Exception {
         boolean positive = false;
         if(initialMove == null){
             if(board[position]>0){
@@ -157,7 +195,14 @@ public class MoveGenerator {
         return positive;
     }
 
-    public byte[] getAvailableSurroundings(byte position, byte[] board, boolean playerType) {
+    /**
+     * Return array of the available surrounding (regular peace)
+     * @param position
+     * @param board
+     * @param playerType
+     * @return
+     */
+    protected byte[] getAvailableSurroundings(byte position, byte[] board, boolean playerType) {
         //array of the positions to check
         byte[] availableSurroundings = new byte[5];
         int arrayPointer = 0;
@@ -189,7 +234,14 @@ public class MoveGenerator {
         return toReturn;
     }
 
-    public byte[] getEnemies(byte[] availableSurroundings, byte[] board, boolean positive){
+    /**
+     * Return array of all the enemies in the surrounding
+     * @param availableSurroundings
+     * @param board
+     * @param positive
+     * @return
+     */
+    protected byte[] getEnemies(byte[] availableSurroundings, byte[] board, boolean positive){
         byte[] enemiesArray = new byte[availableSurroundings.length];
         int arrayPointer = 0;
         for(byte b : availableSurroundings){
@@ -215,7 +267,13 @@ public class MoveGenerator {
         return  toReturn;
     }
 
-    public byte[] getEmptySpaces(byte[] availableSurroundings, byte[] board){
+    /**
+     * Return only empty spaces in available surroundings
+     * @param availableSurroundings
+     * @param board
+     * @return
+     */
+    protected byte[] getEmptySpaces(byte[] availableSurroundings, byte[] board){
         byte[] emptySurrounding = new byte[availableSurroundings.length];
         int arrayPointer = 0;
         for(byte b : availableSurroundings){
@@ -230,7 +288,14 @@ public class MoveGenerator {
         return  arrayToReturn;
     }
 
-    public byte canBeCaptured(byte peacePosition, byte enemyPosition, byte[] board){
+    /**
+     * Return position after capturing if enemy can be captured (valid for regular moves)
+     * @param peacePosition
+     * @param enemyPosition
+     * @param board
+     * @return
+     */
+    protected byte canBeCaptured(byte peacePosition, byte enemyPosition, byte[] board){
         //byte finalPosition = -1;
         int levelChangePeace = Math.abs(peacePosition/8 - enemyPosition/8);
         if(levelChangePeace == 0){
@@ -283,7 +348,7 @@ public class MoveGenerator {
      * @param initialMove move that lead to this position - if non than null
      * @return List<byte> representing all possible moves</>
      */
-    public List<byte[]> getMovesFromPositionRoyal(byte position, byte[] board, byte[] initialMove){
+    protected List<byte[]> getMovesFromPositionRoyal(byte position, byte[] board, byte[] initialMove){
         //logging
         if(log) System.out.println("Starting get moves from position ROYAL");
 
@@ -392,6 +457,13 @@ public class MoveGenerator {
         return moves;
     }
 
+
+    /**
+     * Filter already captured enemies out of the array
+     * @param captureEnemiesInSurrounding
+     * @param initialMove
+     * @return
+     */
     private byte[] filterCapturedEnemies(byte[] captureEnemiesInSurrounding, byte[] initialMove) {
         if(initialMove == null)return captureEnemiesInSurrounding;
 
@@ -422,7 +494,7 @@ public class MoveGenerator {
      * @param board playBoard
      * @return byte[] with position of the enemies and directions in format {enemy_0, direction_0, enemy_1, direction_1,... enemy_n, direction_n}
      */
-    public byte[] getCaptureEnemiesRoyal(byte position, byte[] board, byte activePeace) {
+    protected byte[] getCaptureEnemiesRoyal(byte position, byte[] board, byte activePeace) {
         //logging
         if(log) System.out.println("getCaptureEnemiesRoyal");
         byte[] enemiesCapture = new byte[16];
@@ -484,7 +556,7 @@ public class MoveGenerator {
      * @param board
      * @return
      */
-    public byte[] getLandingLocations(byte position, byte d, byte[] board){
+    protected byte[] getLandingLocations(byte position, byte d, byte[] board){
         byte[] possibleLanding = new byte[10];
         int arrayPointer = 0;
         int jumpIncrement = 1;
@@ -505,7 +577,5 @@ public class MoveGenerator {
 
         return toReturn;
     }
-
-
 
 }
