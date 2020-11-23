@@ -1,6 +1,7 @@
 package cz.whiterabbit.elements;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -140,7 +141,6 @@ public class MoveGenerator {
             }else if (board[position] < 0){
                 positive = false;
             }else{
-                //System.out.println("Box don't contains any play peace");
                 throw new Exception("Box don't contains any play peace");
             }
         }else{
@@ -184,6 +184,8 @@ public class MoveGenerator {
         byte[] toReturn = new byte[arrayPointer];
         System.arraycopy(availableSurroundings, 0, toReturn, 0, arrayPointer);
 
+        Arrays.sort(toReturn);
+
         return toReturn;
     }
 
@@ -208,6 +210,8 @@ public class MoveGenerator {
         //process Array
         byte[] toReturn = new byte[arrayPointer];
         System.arraycopy(enemiesArray,0, toReturn, 0 , arrayPointer);
+
+        Arrays.sort(toReturn);
         return  toReturn;
     }
 
@@ -496,6 +500,8 @@ public class MoveGenerator {
         //concatArray
         byte[] toReturn = new byte[arrayPointer];
         System.arraycopy(possibleLanding, 0, toReturn, 0, arrayPointer);
+
+        Arrays.sort(toReturn);
 
         return toReturn;
     }

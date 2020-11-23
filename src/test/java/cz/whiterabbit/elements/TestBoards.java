@@ -1,4 +1,4 @@
-package cz.whiterabbit.test;
+package cz.whiterabbit.elements;
 
 public class TestBoards {
 
