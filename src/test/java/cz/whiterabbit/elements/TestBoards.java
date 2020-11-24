@@ -137,6 +137,39 @@ public class TestBoards {
             0, 0, 1, 1,-2, 0, 0, 1,
     };
 
+    private byte[] initialPosition = new byte[]{
+             1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 1, 1, 1, 1,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+            -1,-1,-1,-1,-1,-1,-1,-1,
+            -1,-1,-1,-1,-1,-1,-1,-1,
+    };
+
+    private byte[] randomJumps = new byte[]{
+             1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 0, 0, 1, 1,
+             0, 0, 0,-1, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0,-1, 0, 1, 0, 0, 0,
+             0, 0, 0, 1, 0, 0, 0, 0,
+            -1,-1,-1,-1, 0,-1,-1,-1,
+            -1, 0,-1,-1,-1,-1,-1,-1,
+    };
+
+    private byte[] randomJumpsRoyal = new byte[]{
+             1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 2, 0, 0, 1, 2,
+             0, 0, 0,-1, 2, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0,-1, 0, 1, 0, 0, 0,
+             0, 0, 0, 1, 0, 0, 0, 0,
+            -1,-1,-1,-1, 0,-1,-1,-1,
+            -1, 0,-1,-1,-2,-1,-1,-1,
+    };
+
 
 
 
@@ -184,5 +217,17 @@ public class TestBoards {
 
     public byte[] getNoValidEnemies() {
         return noValidEnemies;
+    }
+
+    public byte[] getInitialPosition() {
+        return initialPosition;
+    }
+
+    public byte[] getRandomJumps() {
+        return randomJumps;
+    }
+
+    public byte[] getRandomJumpsRoyal() {
+        return randomJumpsRoyal;
     }
 }

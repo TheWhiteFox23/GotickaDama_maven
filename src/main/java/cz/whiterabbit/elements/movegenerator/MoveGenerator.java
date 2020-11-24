@@ -4,48 +4,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-//todo: both methods can be refactored to be more simple, look at it after testing if there is still time
-
-//todo: Separate into different classes (same interface)
 public class MoveGenerator {
 
-    public void getAllMovesForPlayer(boolean playerType, byte[] board, MoveFilter filter){
-
+    public List<byte[]> getAllMovesForPlayer(boolean playerType, byte[] board, MoveFilter filter) {
+        List<byte []> moves = getAllMovesForPlayer(playerType, board);
+        filter.filter(moves);
+        return moves;
     }
 
-    public void getAllMovesForPlayer(boolean playerType, byte[] board){
+    public List<byte[]> getAllMovesForPlayer(boolean playerType, byte[] board) {
         List<byte[]> moves = new ArrayList<>();
-        for(int i = 0; i< board.length; i++){
-            if(isPositive(board[i]) == playerType){
+        for (int i = 0; i < board.length; i++) {
+            if (isPositive(board[i]) == playerType) {
                 moves.addAll(getMovesFromPosition(i, board));
             }
         }
+        return moves;
     }
 
-    protected boolean isPositive(byte b){
-        return b>0;
+    protected boolean isPositive(byte b) {
+        return b > 0;
     }
 
     /**
      * Get all of the valid moves from given position (don't filter moves with most captures)
+     *
      * @param position
      * @param board
      * @return
      */
-    public List<byte[]> getMovesFromPosition(int position, byte[] board){
+    public List<byte[]> getMovesFromPosition(int position, byte[] board) {
         Finder finder;
         List<byte[]> moves = new ArrayList<>();
-        switch (Math.abs(board[position])){
-            case 1 : {
+        switch (Math.abs(board[position])) {
+            case 1: {
                 finder = new RegularFinder();
-                moves.addAll(finder.find(position, board));
                 break;
             }
-            case 2 :{
+            case 2: {
                 finder = new RoyalFinder();
-                moves.addAll(finder.find(position, board));
                 break;
             }
+            default: {
+                finder = null;
+            }
+        }
+        if (finder != null) {
+            List<byte[]> movesFromPosition = finder.find(position, board);
+            if (movesFromPosition != null) moves.addAll(movesFromPosition);
         }
         return moves;
     }
