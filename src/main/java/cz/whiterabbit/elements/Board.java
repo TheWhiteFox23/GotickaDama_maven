@@ -15,6 +15,9 @@ public class Board {
     }
 
     private void initBoard(){
+        for(int i = 0; i<boardArr.length; i++){
+            boardArr[i]=0;
+        }
         for(int i = 0; i<16; i++){
             boardArr[i] = 1;
         }
@@ -42,6 +45,10 @@ public class Board {
 
     public void setBoard(byte[] boardArr){
         this.boardArr = boardArr;
+    }
+
+    public void resetBoard(){
+        initBoard();
     }
 
 

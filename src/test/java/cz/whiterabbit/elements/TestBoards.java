@@ -170,6 +170,50 @@ public class TestBoards {
             -1, 0,-1,-1,-2,-1,-1,-1,
     };
 
+    private byte[] validateBoard = new byte[]{
+            -1,-1,-1,-1,-1,-1,-1,-1,
+             1, 1, 1, 2, 0, 0, 1, 2,
+             0, 0, 0,-1, 2, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0,-1, 0, 1, 0, 0, 0,
+             0, 0, 0, 1, 0, 0, 0, 0,
+            -1,-1, 0, 0, 0, 0, 0, 0,
+             1, 1, 1, 1, 0, 1, 1, 1,
+    };
+
+    private byte[] validateBoardAfterMove = new byte[]{
+            0, 1, 1, 1, 1, 1, 0, 1,
+            -1, 1, 1, 1, 1, 1, 0, 1,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            -1,-1,-1,-1,0,0,0,-1,
+            -1,-1,-1,-1,-1,-1,-1,-1,
+    };
+    private byte[] finishGame = new byte[]{
+             0, 1, 0, 0, 0, 0, 0, 0,
+            -1, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 1, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0,
+            -1,-1,-1,-1, 0, 0, 0,-1,
+            -1,-1,-1,-1,-1,-1,-1,-1,
+
+    };
+
+    private byte[] noMovesFinish = new byte[]{
+            1, 1, 1, 1, 1, 1, 1, 1,
+            1, 1, 1, 1, 0, 0, 1, 1,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            -1,-1,-1,-1,-1,-1,-1,-1,
+            -1,-1,-1,-1,-1,-1,-1,-1,
+    };
+
 
 
 
@@ -229,5 +273,21 @@ public class TestBoards {
 
     public byte[] getRandomJumpsRoyal() {
         return randomJumpsRoyal;
+    }
+
+    public byte[] getValidateBoard() {
+        return validateBoard;
+    }
+
+    public byte[] getValidateBoardAfterMove() {
+        return validateBoardAfterMove;
+    }
+
+    public byte[] getFinishGame() {
+        return finishGame;
+    }
+
+    public byte[] getNoMovesFinish() {
+        return noMovesFinish;
     }
 }

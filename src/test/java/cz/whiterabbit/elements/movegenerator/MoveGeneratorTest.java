@@ -708,6 +708,8 @@ class MoveGeneratorTest {
     }
 
 
+
+
     //todo Move to testUtilities Class
     //TEST HELP METHODS
     private void compareLists(List<byte[]> l1, List<byte[]> l2) {
