@@ -1,52 +1,68 @@
 package cz.whiterabbit.gui;
 
+import cz.whiterabbit.gameloop.PlayerLevel;
+import cz.whiterabbit.gameloop.PlayerOperator;
 
-/**
- * Create console output representing current game status
- * - singleton, don't really need more than one instance
- */
-@Deprecated
+import java.util.Scanner;
+
 public class ConsoleParser {
-    public static ConsoleParser consoleParser = new ConsoleParser();
+    Scanner scanner; //for testing - allow to change source
 
-    /**
-     * singletons private constructor
-     */
-    private ConsoleParser(){
-
+    public ConsoleParser(Scanner scanner){
+        this.scanner = scanner;
     }
 
     /**
-     * Draw ascii representation of the board
-     * temporally method, will be replaced todo - rewrite after debugging
-     * @param board
+     * Prompt for string and return it, no check
+     * @param promptText - text to display when prompting
+     * @return
      */
-    public void drawBoard(byte[] board){
-        //int count = 0;
-        printHorizontalLine();
-        for(int i = 0; i<board.length; i++){
-            if((i+1)%8 != 0){
-                if(String.valueOf(board[i]).length()==1){
-                    System.out.print("|" + board[i] + " ");
-                }else{
-                    System.out.print("|" + board[i]);
-                }
-            }else{
-                if(String.valueOf(board[i]).length()==1) {
-                    System.out.print("|" + board[i] + " |" + "\n");
-                }else{
-                    System.out.print("|" + board[i] + "|" + "\n");
-                }
+
+    public String promptForString(String promptText, String defaultOption){
+        System.out.print(promptText);
+        String userInput = scanner.nextLine();
+        if(userInput.length() == 0)  return defaultOption;
+        return userInput;
+    }
+
+    public PlayerOperator promptForPlayerOperator(String promptText, PlayerOperator operator){
+        System.out.print(promptText);
+        String userInput = scanner.nextLine();
+
+        if(userInput.length() == 0) return  operator;
+
+        switch(userInput.toLowerCase()){
+            case "player" : {
+                return PlayerOperator.HUMAN_PLAYER;
+            } case "computer_minimax":{
+                return PlayerOperator.COMPUTER_MINIMAX;
+            } case "computer_random":{
+                return PlayerOperator.COMPUTER_RANDOM;
+            } default: {
+                System.out.println("INVALID OPTION");
+                return promptForPlayerOperator(promptText, operator);
             }
         }
-        printHorizontalLine();
     }
 
-    private void printHorizontalLine(){
-        for(int i = 0; i< 8; i++){
-            System.out.print("---");
+    public PlayerLevel promptForPlayerLevel(String promptText, PlayerLevel level){
+        System.out.print(promptText);
+        String userInput = scanner.nextLine();
+
+        if(userInput.length() == 0) return  level;
+
+        switch(userInput.toLowerCase()){
+            case "easy" : {
+                return PlayerLevel.EASY;
+            } case "medium":{
+                return PlayerLevel.MEDIUM;
+            } case "hard":{
+                return PlayerLevel.HARD;
+            } default: {
+                System.out.println("INVALID OPTION");
+                return promptForPlayerLevel(promptText, level);
+            }
         }
-        System.out.println();
     }
 
 }

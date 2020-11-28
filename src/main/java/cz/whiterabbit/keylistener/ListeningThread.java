@@ -35,6 +35,7 @@ public class ListeningThread implements Runnable{
 
         Scanner keyboard = new Scanner(System.in);
         boolean exit = false;
+
         while (true) {
             System.out.println("Enter command (quit to exit):");
             String input = keyboard.nextLine();
