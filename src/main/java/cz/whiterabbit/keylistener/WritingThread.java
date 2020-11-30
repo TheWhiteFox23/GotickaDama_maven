@@ -1,16 +1,18 @@
 package cz.whiterabbit.keylistener;
 
-import cz.whiterabbit.gui.ConsolePrinter;
+import cz.whiterabbit.gui.ConsoleManager;
+
+import java.util.Scanner;
 
 public class WritingThread implements Runnable{
 
-    ConsolePrinter consolePrinter;
+    ConsoleManager consolePrinter;
     private Thread thread;
     private boolean pause = false;
     private boolean stop = false;
 
     public WritingThread(String name){
-        consolePrinter = new ConsolePrinter();
+        consolePrinter = new ConsoleManager(new Scanner(System.in));
         thread = new Thread(this, name);
     }
 

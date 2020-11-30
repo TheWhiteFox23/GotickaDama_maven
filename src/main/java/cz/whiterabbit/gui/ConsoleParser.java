@@ -1,12 +1,14 @@
 package cz.whiterabbit.gui;
 
+import cz.whiterabbit.gameloop.CommandListener;
 import cz.whiterabbit.gameloop.PlayerLevel;
 import cz.whiterabbit.gameloop.PlayerOperator;
 
 import java.util.Scanner;
 
 public class ConsoleParser {
-    Scanner scanner; //for testing - allow to change source
+    private Scanner scanner; //for testing - allow to change source
+    private CommandListener commandListener;
 
     public ConsoleParser(Scanner scanner){
         this.scanner = scanner;
@@ -65,4 +67,51 @@ public class ConsoleParser {
         }
     }
 
+    public void promptForCommand(String promptText){
+        System.out.print(promptText);
+        String inputText = scanner.nextLine();
+        switch (inputText.toLowerCase()){
+            case "help":{
+                printCommandList();
+                break;
+            } case "resume":{
+                commandListener.onGameResume();
+                break;
+            } case "settings":{
+                commandListener.onChangeSettings();
+                break;
+            } case "restart" :{
+                commandListener.onGameRestart();
+                break;
+            } case "moves" :{
+                commandListener.onPrintAllMoves();
+                break;
+            } case "suggest_move" : {
+                commandListener.onPrintBestMove();
+                break;
+            } default:{
+                printCommandList();
+            }
+        }
+
+    }
+
+    private void printCommandList(){
+        System.out.println(
+                "help : show list of commands \n" +
+                        "settings : invoke settings menu \n" +
+                        "resume : continue the game loop \n" +
+                        "restart : start a new game \n" +
+                        "moves : print list of all the possible moves \n" +
+                        "suggest_move : suggest best possible move");
+
+    }
+
+    public CommandListener getCommandListener() {
+        return commandListener;
+    }
+
+    public void setCommandListener(CommandListener commandListener) {
+        this.commandListener = commandListener;
+    }
 }
