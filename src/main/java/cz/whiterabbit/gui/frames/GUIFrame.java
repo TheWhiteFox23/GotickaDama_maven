@@ -1,4 +1,6 @@
-package cz.whiterabbit.gui;
+package cz.whiterabbit.gui.frames;
+
+import cz.whiterabbit.gui.listeners.FrameListener;
 
 import java.io.IOException;
 

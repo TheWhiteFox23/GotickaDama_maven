@@ -3,7 +3,11 @@ package cz.whiterabbit.gui;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import cz.whiterabbit.elements.GameController;
-import cz.whiterabbit.gameloop.GameSettings;
+import cz.whiterabbit.gui.frames.elements.GameSettings;
+import cz.whiterabbit.gui.frames.GameLoopFrame;
+import cz.whiterabbit.gui.frames.MenuFrame;
+import cz.whiterabbit.gui.frames.SettingsFrame;
+import cz.whiterabbit.gui.listeners.FrameListener;
 
 import java.io.IOException;
 

@@ -1,10 +1,13 @@
-package cz.whiterabbit.gui;
+package cz.whiterabbit.gui.frames;
 
 import com.googlecode.lanterna.*;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
+import cz.whiterabbit.gui.frames.elements.LanternaMenuItem;
+import cz.whiterabbit.gui.frames.elements.LanternaToggleMenuItem;
+import cz.whiterabbit.gui.listeners.FrameListener;
 
 import java.io.IOException;
 import java.util.ArrayList;

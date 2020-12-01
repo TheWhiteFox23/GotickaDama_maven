@@ -1,6 +1,5 @@
-package cz.whiterabbit.gui;
+package cz.whiterabbit.gui.frames;
 
-import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;

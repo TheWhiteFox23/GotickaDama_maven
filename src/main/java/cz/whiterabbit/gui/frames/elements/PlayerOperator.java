@@ -1,4 +1,4 @@
-package cz.whiterabbit.gameloop;
+package cz.whiterabbit.gui.frames.elements;
 
 public enum PlayerOperator {
     HUMAN_PLAYER,

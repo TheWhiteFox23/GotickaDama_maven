@@ -1,11 +1,14 @@
-package cz.whiterabbit.gui;
+package cz.whiterabbit.gui.frames;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
-import cz.whiterabbit.gameloop.GameSettings;
-import cz.whiterabbit.gameloop.PlayerLevel;
-import cz.whiterabbit.gameloop.PlayerOperator;
+import cz.whiterabbit.gui.frames.elements.GameSettings;
+import cz.whiterabbit.gui.frames.elements.PlayerLevel;
+import cz.whiterabbit.gui.frames.elements.PlayerOperator;
+import cz.whiterabbit.gui.frames.elements.LanternaMenuItem;
+import cz.whiterabbit.gui.frames.elements.LanternaToggleMenuItem;
+import cz.whiterabbit.gui.listeners.ToggleMenuListener;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
-package cz.whiterabbit.gui;
+package cz.whiterabbit.gui.frames.elements;
 
 import com.googlecode.lanterna.TextColor;
+import cz.whiterabbit.gui.listeners.ToggleMenuListener;
 
 import java.util.ArrayList;
 import java.util.List;

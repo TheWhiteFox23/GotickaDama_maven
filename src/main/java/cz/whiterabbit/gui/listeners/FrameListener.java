@@ -1,4 +1,4 @@
-package cz.whiterabbit.gui;
+package cz.whiterabbit.gui.listeners;
 
 import java.io.IOException;
 
