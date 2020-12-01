@@ -8,7 +8,6 @@ import com.googlecode.lanterna.screen.Screen;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 abstract class LanternaFrame implements GUIFrame {
     //Menu
@@ -20,6 +19,7 @@ abstract class LanternaFrame implements GUIFrame {
     private Screen screen;
     private boolean valid = false;
 
+
     public LanternaFrame(Screen screen){
         this.screen = screen;
         loopTimeout = 1;
@@ -27,6 +27,7 @@ abstract class LanternaFrame implements GUIFrame {
 
     //todo improvise refactor later
     public void drawFrame() throws IOException {
+        valid = false;
         while(true){
             if(!valid){
                 onDraw();
@@ -179,21 +180,36 @@ abstract class LanternaFrame implements GUIFrame {
                 invalidate();
             }else if(keyStroke.getKeyType()==KeyType.Enter){
                for(int i = 0; i< lanternaMenu.size(); i++){
-                   if(lanternaMenu.get(i).getIndex() == selectedMenuIndex){
-                       lanternaMenu.get(i).getMenuItemListener().onSelect();
+                   LanternaMenuItem menuItem = lanternaMenu.get(i);
+                   if(menuItem.getIndex() == selectedMenuIndex){
+                       if(menuItem.getMenuItemListener() != null){
+                           menuItem.getMenuItemListener().onSelect();
+                       }
                    }
                }
             }else if(keyStroke.getKeyType()==KeyType.ArrowRight){
                 for(int i = 0; i< lanternaMenu.size(); i++){
                     if(lanternaMenu.get(i).getIndex() == selectedMenuIndex){
-                        if(lanternaMenu.get(i).getToggleMenuItem() != null)lanternaMenu.get(i).getToggleMenuItem().turnRight();
+                        LanternaToggleMenuItem toggleMenuItem = lanternaMenu.get(i).getToggleMenuItem();
+                        if(toggleMenuItem != null){
+                            toggleMenuItem.turnRight();
+                            if(toggleMenuItem.getToggleMenuListener() != null){
+                                toggleMenuItem.getToggleMenuListener().onToggle();
+                            }
+                        }
                     }
                 }
                 invalidate();
             }else if(keyStroke.getKeyType()==KeyType.ArrowLeft){
                 for(int i = 0; i< lanternaMenu.size(); i++){
                     if(lanternaMenu.get(i).getIndex() == selectedMenuIndex){
-                        if(lanternaMenu.get(i).getToggleMenuItem() != null)lanternaMenu.get(i).getToggleMenuItem().turnLeft();
+                        LanternaToggleMenuItem toggleMenuItem = lanternaMenu.get(i).getToggleMenuItem();
+                        if(toggleMenuItem != null){
+                            toggleMenuItem.turnLeft();
+                            if(toggleMenuItem.getToggleMenuListener() != null){
+                                toggleMenuItem.getToggleMenuListener().onToggle();
+                            }
+                        }
                     }
                 }
                 invalidate();

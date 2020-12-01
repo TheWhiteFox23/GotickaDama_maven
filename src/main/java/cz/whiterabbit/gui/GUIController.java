@@ -71,6 +71,33 @@ public class GUIController {
                 menuFrame.showResponseText("CONTINUE option selected");
             }
         });
+
+        settingsFrame.setFrameListener(new FrameListener() {
+            @Override
+            public void onSettings() {
+
+            }
+
+            @Override
+            public void onNewGame() {
+
+            }
+
+            @Override
+            public void onMenu() {
+                try {
+                    screen.clear();
+                    menuFrame.drawFrame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onContinue() {
+
+            }
+        });
     }
 
 }

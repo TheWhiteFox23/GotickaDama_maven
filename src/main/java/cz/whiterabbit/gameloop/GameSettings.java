@@ -56,4 +56,16 @@ public class GameSettings {
     public void setWhitePlayerLevel(PlayerLevel whitePlayerLevel) {
         this.whitePlayerLevel = whitePlayerLevel;
     }
+
+    @Override
+    public String toString() {
+        return "GameSettings{" +
+                "blackPlayerName='" + blackPlayerName + '\'' +
+                ", whitePlayerName='" + whitePlayerName + '\'' +
+                ", blackOperator=" + blackOperator +
+                ", whiteOperator=" + whiteOperator +
+                ", blackPlayerLevel=" + blackPlayerLevel +
+                ", whitePlayerLevel=" + whitePlayerLevel +
+                '}';
+    }
 }

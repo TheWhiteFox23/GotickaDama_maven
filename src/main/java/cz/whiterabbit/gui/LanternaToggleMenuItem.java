@@ -13,13 +13,16 @@ public class LanternaToggleMenuItem {
     private TextColor.ANSI selectedBackground = TextColor.ANSI.BLUE;
     private TextColor.ANSI selectedForeground = TextColor.ANSI.WHITE;
 
+    private ToggleMenuListener toggleMenuListener;
+
     public LanternaToggleMenuItem(int positionX, int positionY){
         initialize(positionX, positionY);
     }
 
-    public LanternaToggleMenuItem(int positionX, int positionY, List<String> optionsList){
+    public LanternaToggleMenuItem(int positionX, int positionY, List<String> optionsList, ToggleMenuListener toggleMenuListener){
         initialize(positionX, positionY);
         this.optionsList = optionsList;
+        this.toggleMenuListener = toggleMenuListener;
     }
 
     private void initialize(int positionX, int positionY) {
@@ -95,5 +98,9 @@ public class LanternaToggleMenuItem {
 
     public void setSelectedForeground(TextColor.ANSI selectedForeground) {
         this.selectedForeground = selectedForeground;
+    }
+
+    public ToggleMenuListener getToggleMenuListener() {
+        return toggleMenuListener;
     }
 }

@@ -1,11 +1,12 @@
 package cz.whiterabbit.gui;
 
 import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import cz.whiterabbit.gameloop.GameSettings;
-import org.w3c.dom.Text;
+import cz.whiterabbit.gameloop.PlayerLevel;
+import cz.whiterabbit.gameloop.PlayerOperator;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -23,60 +24,82 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
     private void initMenu() {
         //White Operator
         LanternaMenuItem whiteOperator = new LanternaMenuItem("White player operator", 2, 5, 0);
-        whiteOperator.setMenuItemListener(new MenuItemListener() {
-            @Override
-            public void onSelect() {
-                System.out.println("White player operator");
-            }
-        });
         whiteOperator.setToggleMenuItem(new LanternaToggleMenuItem(30, 5, new ArrayList<>() {{
             add("PLAYER");
             add("COMPUTER_MINIMAX");
             add("COMPUTER_RANDOM");
-        }}));
+        }}, new ToggleMenuListener() {
+            @Override
+            public void onToggle() {
+                gameSettings.setWhiteOperator(parseOperator(whiteOperator.getToggleMenuItem().getSelectedItem()));
+            }
+        }));
         addMenuItem(whiteOperator);
 
         LanternaMenuItem whiteDifficulty = new LanternaMenuItem("White player difficulty", 2, 6, 1);
-        whiteDifficulty.setMenuItemListener(new MenuItemListener() {
-            @Override
-            public void onSelect() {
-                System.out.println("White player difficulty");
-            }
-        });
         whiteDifficulty.setToggleMenuItem(new LanternaToggleMenuItem(30, 6, new ArrayList<>() {{
             add("EASY");
             add("MEDIUM");
             add("HARD");
-        }}));
+        }}, new ToggleMenuListener() {
+            @Override
+            public void onToggle() {
+                gameSettings.setWhitePlayerLevel(parseLevel(whiteDifficulty.getToggleMenuItem().getSelectedItem()));
+            }
+        }));
         addMenuItem(whiteDifficulty);
 
         LanternaMenuItem blackOperator = new LanternaMenuItem("Black player operator", 2, 10, 2);
-        blackOperator.setMenuItemListener(new MenuItemListener() {
-            @Override
-            public void onSelect() {
-                System.out.println("Black player operator");
-            }
-        });
         blackOperator.setToggleMenuItem(new LanternaToggleMenuItem(30, 10, new ArrayList<>() {{
             add("PLAYER");
             add("COMPUTER_MINIMAX");
             add("COMPUTER_RANDOM");
-        }}));
+        }}, new ToggleMenuListener() {
+            @Override
+            public void onToggle() {
+                gameSettings.setBlackOperator(parseOperator(blackOperator.getToggleMenuItem().getSelectedItem()));
+            }
+        }));
         addMenuItem(blackOperator);
 
         LanternaMenuItem blackDifficulty = new LanternaMenuItem("Black player difficulty", 2, 11, 3);
-        blackDifficulty.setMenuItemListener(new MenuItemListener() {
-            @Override
-            public void onSelect() {
-                System.out.println("Black player difficulty");
-            }
-        });
         blackDifficulty.setToggleMenuItem(new LanternaToggleMenuItem(30, 11, new ArrayList<>() {{
             add("EASY");
             add("MEDIUM");
             add("HARD");
-        }}));
+        }}, new ToggleMenuListener() {
+            @Override
+            public void onToggle() {
+                gameSettings.setBlackPlayerLevel(parseLevel(blackDifficulty.getToggleMenuItem().getSelectedItem()));
+            }
+        }));
         addMenuItem(blackDifficulty);
+    }
+
+    private PlayerLevel parseLevel(String selectedItem) {
+        switch (selectedItem){
+            case "EASY":{
+                return PlayerLevel.EASY;
+            } case "MEDIUM":{
+                return PlayerLevel.MEDIUM;
+            } case "HARD":{
+                return PlayerLevel.HARD;
+            }
+        }
+        return null;
+    }
+
+    private PlayerOperator parseOperator(String selectedItem) {
+        switch (selectedItem){
+            case "PLAYER":{
+                return PlayerOperator.HUMAN_PLAYER;
+            } case "COMPUTER_MINIMAX":{
+                return PlayerOperator.COMPUTER_MINIMAX;
+            } case "COMPUTER_RANDOM":{
+                return PlayerOperator.COMPUTER_RANDOM;
+            }
+        }
+        return null;
     }
 
 
@@ -99,12 +122,14 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
         if (keyStroke != null) {
             menuOnListen(keyStroke);
         }
+        if(keyStroke!= null && keyStroke.getKeyType() == KeyType.Enter){
+            if(getFrameListener() != null){
+                //System.out.println("Drawing menu");
+                getFrameListener().onMenu();
+            }
+        }
         //menuOnListen();
 
     }
 
-    @Override
-    public void setFrameListener(FrameListener frameListener) {
-
-    }
 }
