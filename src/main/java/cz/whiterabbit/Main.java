@@ -1,9 +1,8 @@
 package cz.whiterabbit;
 
-import cz.whiterabbit.gameloop.GameLoop;
-import cz.whiterabbit.keylistener.ListeningThread;
-import cz.whiterabbit.keylistener.WritingThread;
+import cz.whiterabbit.gui.GUIController;
 
+import java.io.IOException;
 
 
 public class Main {
@@ -20,11 +19,17 @@ public class Main {
         }catch (InterruptedException e){
             System.out.println(e.toString());
         }*/
-        GameLoop gameLoop = new GameLoop();
-        gameLoop.run();
+        /*GameLoop gameLoop = new GameLoop();
+        gameLoop.run();*/
 
-
+        try {
+            GUIController guiController = new GUIController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }
+
+
 }
