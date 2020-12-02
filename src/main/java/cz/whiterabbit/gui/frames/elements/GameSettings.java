@@ -2,28 +2,10 @@ package cz.whiterabbit.gui.frames.elements;
 
 public class GameSettings {
 
-    private String blackPlayerName = "player_2";
-    private String whitePlayerName = "player_1";
     private PlayerOperator blackOperator = PlayerOperator.HUMAN_PLAYER;
-    private PlayerOperator whiteOperator = PlayerOperator.COMPUTER_MINIMAX;
-    private PlayerLevel blackPlayerLevel = PlayerLevel.MEDIUM;
-    private PlayerLevel whitePlayerLevel = PlayerLevel.MEDIUM;
-
-    public String getBlackPlayerName() {
-        return blackPlayerName;
-    }
-
-    public void setBlackPlayerName(String blackPlayerName) {
-        this.blackPlayerName = blackPlayerName;
-    }
-
-    public String getWhitePlayerName() {
-        return whitePlayerName;
-    }
-
-    public void setWhitePlayerName(String whitePlayerName) {
-        this.whitePlayerName = whitePlayerName;
-    }
+    private PlayerOperator whiteOperator = PlayerOperator.HUMAN_PLAYER;
+    private PlayerLevel blackPlayerLevel = PlayerLevel.EASY;
+    private PlayerLevel whitePlayerLevel = PlayerLevel.EASY;
 
     public PlayerOperator getBlackOperator() {
         return blackOperator;
@@ -60,8 +42,6 @@ public class GameSettings {
     @Override
     public String toString() {
         return "GameSettings{" +
-                "blackPlayerName='" + blackPlayerName + '\'' +
-                ", whitePlayerName='" + whitePlayerName + '\'' +
                 ", blackOperator=" + blackOperator +
                 ", whiteOperator=" + whiteOperator +
                 ", blackPlayerLevel=" + blackPlayerLevel +

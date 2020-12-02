@@ -43,7 +43,7 @@ public class GUIController {
         gameSettings = new GameSettings();
         //Frames
         menuFrame = new MenuFrame(screen);
-        gameLoopFrame = new GameLoopFrame(); //game controller and game settings will be injected
+        gameLoopFrame = new GameLoopFrame(screen, gameController, gameSettings); //game controller and game settings will be injected
         settingsFrame = new SettingsFrame(screen, gameSettings); //game settings will be injected
     }
 
@@ -62,7 +62,12 @@ public class GUIController {
 
             @Override
             public void onNewGame() {
-                menuFrame.showResponseText("NEW GAME option selected");
+                try {
+                    screen.clear();
+                    gameLoopFrame.drawFrame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

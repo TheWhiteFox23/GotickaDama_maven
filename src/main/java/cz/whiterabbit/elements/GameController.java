@@ -95,11 +95,15 @@ public class GameController {
         return moveMemory;
     }
 
-    protected boolean isPlayerType() {
+    public boolean isPlayerType() {
         return playerType;
     }
 
     protected void setPlayerType(boolean playerType) {
         this.playerType = playerType;
+    }
+
+    public byte[] getBoardArr(){
+        return board.getBoardArr();
     }
 }

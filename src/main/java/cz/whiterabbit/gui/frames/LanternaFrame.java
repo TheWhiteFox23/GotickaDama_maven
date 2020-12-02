@@ -21,6 +21,7 @@ abstract class LanternaFrame implements GUIFrame {
     private FrameListener frameListener;
     private Screen screen;
     private boolean valid = false;
+    //private boolean pause = false;
 
 
     public LanternaFrame(Screen screen){
@@ -33,9 +34,9 @@ abstract class LanternaFrame implements GUIFrame {
         valid = false;
         while(true){
             if(!valid){
+                valid = true;
                 onDraw();
                 screen.refresh();
-                valid = true;
             }
             onListen();
             try {

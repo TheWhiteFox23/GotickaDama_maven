@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class SettingsFrame extends LanternaFrame implements GUIFrame {
-    private String whitePlayerText = "White player";
-    private String blackPlayerText = "Black player";
+    private String whitePlayerText = "Player X";
+    private String blackPlayerText = "Player O";
     private GameSettings gameSettings;
 
     public SettingsFrame(Screen screen, GameSettings gameSettings) {
@@ -26,7 +26,7 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
 
     private void initMenu() {
         //White Operator
-        LanternaMenuItem whiteOperator = new LanternaMenuItem("White player operator", 2, 5, 0);
+        LanternaMenuItem whiteOperator = new LanternaMenuItem("X player operator", 2, 5, 0);
         whiteOperator.setToggleMenuItem(new LanternaToggleMenuItem(30, 5, new ArrayList<>() {{
             add("PLAYER");
             add("COMPUTER_MINIMAX");
@@ -39,7 +39,7 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
         }));
         addMenuItem(whiteOperator);
 
-        LanternaMenuItem whiteDifficulty = new LanternaMenuItem("White player difficulty", 2, 6, 1);
+        LanternaMenuItem whiteDifficulty = new LanternaMenuItem("X player difficulty", 2, 6, 1);
         whiteDifficulty.setToggleMenuItem(new LanternaToggleMenuItem(30, 6, new ArrayList<>() {{
             add("EASY");
             add("MEDIUM");
@@ -52,7 +52,7 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
         }));
         addMenuItem(whiteDifficulty);
 
-        LanternaMenuItem blackOperator = new LanternaMenuItem("Black player operator", 2, 10, 2);
+        LanternaMenuItem blackOperator = new LanternaMenuItem("O player operator", 2, 10, 2);
         blackOperator.setToggleMenuItem(new LanternaToggleMenuItem(30, 10, new ArrayList<>() {{
             add("PLAYER");
             add("COMPUTER_MINIMAX");
@@ -65,7 +65,7 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
         }));
         addMenuItem(blackOperator);
 
-        LanternaMenuItem blackDifficulty = new LanternaMenuItem("Black player difficulty", 2, 11, 3);
+        LanternaMenuItem blackDifficulty = new LanternaMenuItem("O player difficulty", 2, 11, 3);
         blackDifficulty.setToggleMenuItem(new LanternaToggleMenuItem(30, 11, new ArrayList<>() {{
             add("EASY");
             add("MEDIUM");
@@ -109,8 +109,11 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
     @Override
     void onDraw() {
         drawInFrame("SETTINGS", 1, 1);
-        paintBorder("WHITE", 1, 4, 50, 5, -1);
-        paintBorder("BLACK", 1, 9, 50, 5, -1);
+        paintBorder("X PLAYER", 1, 4, 50, 5, -1);
+        paintBorder("O PLAYER", 1, 9, 50, 5, -1);
+        drawSimpleText("Up/Down arrow - menu navigation",3, 13);
+        drawSimpleText("Left/Right arrow - change setting",3, 14);
+        drawSimpleText("Enter - save settings and return to menu",3, 15);
         drawMenu();
     }
 
@@ -127,7 +130,6 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
         }
         if(keyStroke!= null && keyStroke.getKeyType() == KeyType.Enter){
             if(getFrameListener() != null){
-                //System.out.println("Drawing menu");
                 getFrameListener().onMenu();
             }
         }
