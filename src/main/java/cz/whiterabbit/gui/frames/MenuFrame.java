@@ -3,20 +3,25 @@ package cz.whiterabbit.gui.frames;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
+import cz.whiterabbit.elements.GameController;
+import cz.whiterabbit.elements.GameState;
 
 import java.io.IOException;
 
 public class MenuFrame extends LanternaFrame implements GUIFrame{
 
+    //Todo replace with property file
+    //Gui text strings
     private String title = "Gotická dáma";
     private String hint = "Pro výběr v menu stiskněte odpovídající klávesu";
     private String menuSettings =   "Nastavení   (S)";
     private String menuNewGame =    "Nová hra    (N)";
     private String menuContinue=    "Pokračovat  (P)";
-    private boolean continueVisible = false;
 
-    public MenuFrame(Screen screen){
+    private GameController gameController;
+    public MenuFrame(Screen screen, GameController gameController){
         super(screen);
+        this.gameController = gameController;
     }
 
     @Override
@@ -26,7 +31,7 @@ public class MenuFrame extends LanternaFrame implements GUIFrame{
 
         drawSimpleText(menuSettings, 2, 6);
         drawSimpleText(menuNewGame, 2, 7);
-        if(continueVisible)drawSimpleText(menuContinue, 2, 8);
+        if(gameController.getGameState() == GameState.IN_PROGRESS)drawSimpleText(menuContinue, 2, 8);
     }
 
     @Override
@@ -46,7 +51,7 @@ public class MenuFrame extends LanternaFrame implements GUIFrame{
                     getFrameListener().onNewGame();
                     break;
                 } case 'p':{
-                    if(continueVisible) getFrameListener().onContinue();
+                    if(gameController.getGameState() == GameState.IN_PROGRESS) getFrameListener().onContinue();
                 }
             }
         }
@@ -55,10 +60,5 @@ public class MenuFrame extends LanternaFrame implements GUIFrame{
     @Override
     public void setLoopTimeout(int loopTimeout) {
         super.setLoopTimeout(loopTimeout);
-    }
-
-    public void showResponseText(String text){
-        drawSimpleText(text, 2, 10);
-        invalidate();
     }
 }

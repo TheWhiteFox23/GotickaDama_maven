@@ -7,4 +7,5 @@ public interface FrameListener {
     void onNewGame();
     void onMenu();
     void onContinue();
+    void onBack();
 }

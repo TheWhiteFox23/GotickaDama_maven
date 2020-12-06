@@ -11,21 +11,20 @@ public class GameController {
     private Judge judge;
     private MoveMemory moveMemory;
     private boolean playerType;
-    GameState gameState;
+    protected GameState gameState;
 
     public GameController() {
         this.board = new Board();
         this.moveGenerator = new MoveGenerator();
         this.judge = new Judge();
         this.moveMemory = new MoveMemory();
-        gameState = GameState.NOT_STARTED;
+        this.gameState = GameState.NOT_STARTED;
     }
 
     //TESTED
     public void startGame(){
-        board.resetBoard();
-        moveMemory.resetMemory();
-        playerType = true;
+        System.out.println("START GAME CALL");
+        resetGame();
         gameState = GameState.IN_PROGRESS;
     }
 
@@ -63,13 +62,17 @@ public class GameController {
     }
 
     public boolean canContinue(){
-        gameState = judge.getCurrentGameState(board, moveMemory);
+        //System.out.println("canContinue CALL");
+        if(gameState != GameState.NOT_STARTED){ //so the NOT_STARTED game state is not overwritten
+            gameState = judge.getCurrentGameState(board, moveMemory);
+        }
         switch(gameState){
             case DRAW:
             case POSITIVE_WIN:
             case NEGATIVE_WIN:
                 return false;
             case IN_PROGRESS:
+            case NOT_STARTED:
             default:
                 return true;
         }
@@ -81,14 +84,6 @@ public class GameController {
 
     protected Board getBoard() {
         return board;
-    }
-
-    protected MoveGenerator getMoveGenerator() {
-        return moveGenerator;
-    }
-
-    protected Judge getJudge() {
-        return judge;
     }
 
     protected MoveMemory getMoveMemory() {
@@ -105,5 +100,12 @@ public class GameController {
 
     public byte[] getBoardArr(){
         return board.getBoardArr();
+    }
+
+    public void resetGame(){
+        board.resetBoard();
+        moveMemory.resetMemory();
+        playerType = true;
+        gameState = GameState.NOT_STARTED;
     }
 }

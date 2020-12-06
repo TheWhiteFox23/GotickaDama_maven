@@ -113,7 +113,7 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
         paintBorder("O PLAYER", 1, 9, 50, 5, -1);
         drawSimpleText("Up/Down arrow - menu navigation",3, 13);
         drawSimpleText("Left/Right arrow - change setting",3, 14);
-        drawSimpleText("Enter - save settings and return to menu",3, 15);
+        drawSimpleText("Enter - save settings and return",3, 15);
         drawMenu();
     }
 
@@ -130,7 +130,7 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
         }
         if(keyStroke!= null && keyStroke.getKeyType() == KeyType.Enter){
             if(getFrameListener() != null){
-                getFrameListener().onMenu();
+                getFrameListener().onBack();
             }
         }
         //menuOnListen();

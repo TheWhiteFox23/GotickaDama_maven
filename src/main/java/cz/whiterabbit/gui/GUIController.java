@@ -3,6 +3,7 @@ package cz.whiterabbit.gui;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import cz.whiterabbit.elements.GameController;
+import cz.whiterabbit.elements.GameState;
 import cz.whiterabbit.gui.frames.elements.GameSettings;
 import cz.whiterabbit.gui.frames.GameLoopFrame;
 import cz.whiterabbit.gui.frames.MenuFrame;
@@ -13,16 +14,20 @@ import java.io.IOException;
 
 public class GUIController {
     //Frames
-    MenuFrame menuFrame;
-    GameLoopFrame gameLoopFrame;
-    SettingsFrame settingsFrame;
+    private MenuFrame menuFrame;
+    private GameLoopFrame gameLoopFrame;
+    private SettingsFrame settingsFrame;
+
+    //Frame control
+    private GameFrame previousFrame = GameFrame.MAIN_MENU_FRAME;
+    private GameFrame activeFrame = GameFrame.MAIN_MENU_FRAME;
 
     //Game Components
-    GameController gameController;
-    GameSettings gameSettings;
+    private GameController gameController;
+    private GameSettings gameSettings;
 
     //Lanterna
-    Screen screen;
+    private Screen screen;
 
     public GUIController() throws IOException {
         initialize();
@@ -33,7 +38,6 @@ public class GUIController {
 
     private void initialize() throws IOException {
         //Lanterna
-
         screen = new DefaultTerminalFactory().createScreen();
         screen.startScreen();
         screen.setCursorPosition(null);
@@ -41,72 +45,102 @@ public class GUIController {
         //Game Elements
         gameController = new GameController();
         gameSettings = new GameSettings();
+
         //Frames
-        menuFrame = new MenuFrame(screen);
+        menuFrame = new MenuFrame(screen, gameController);
         gameLoopFrame = new GameLoopFrame(screen, gameController, gameSettings); //game controller and game settings will be injected
         settingsFrame = new SettingsFrame(screen, gameSettings); //game settings will be injected
+    }
+
+    private void switchFrame(GameFrame gameFrame){
+        previousFrame = activeFrame;
+        activeFrame = gameFrame;
+        screen.clear();
+        try{
+            switch (gameFrame){
+                case GAME_FRAME -> gameLoopFrame.drawFrame();
+                case SETTINGS_FRAME -> settingsFrame.drawFrame();
+                case MAIN_MENU_FRAME -> menuFrame.drawFrame();
+            }
+        }catch (IOException e){
+            System.out.println("Unable to draw the frame :" + e.toString());
+        }
+
+
     }
 
     private void initializeListeners() {
         menuFrame.setFrameListener(new FrameListener() {
             @Override
             public void onSettings() {
-                try {
-                    screen.clear();
-                    settingsFrame.drawFrame();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //menuFrame.showResponseText("SETTINGS option selected");
+                switchFrame(GameFrame.SETTINGS_FRAME);
             }
 
             @Override
             public void onNewGame() {
-                try {
-                    screen.clear();
-                    gameLoopFrame.drawFrame();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                gameLoopFrame.startNewGame();
+                switchFrame(GameFrame.GAME_FRAME);
             }
 
             @Override
-            public void onMenu() {
-
-            }
+            public void onMenu() { }
 
             @Override
             public void onContinue() {
-                menuFrame.showResponseText("CONTINUE option selected");
+                switchFrame(GameFrame.GAME_FRAME);
+            }
+
+            @Override
+            public void onBack() {
+
             }
         });
 
         settingsFrame.setFrameListener(new FrameListener() {
             @Override
-            public void onSettings() {
+            public void onSettings() { }
 
+            @Override
+            public void onNewGame() { }
+
+            @Override
+            public void onMenu() { }
+
+            @Override
+            public void onContinue() { }
+
+            @Override
+            public void onBack() {
+                switchFrame(previousFrame);
+            }
+        });
+
+        gameLoopFrame.setFrameListener(new FrameListener() {
+            @Override
+            public void onSettings() {
+                switchFrame(GameFrame.SETTINGS_FRAME);
             }
 
             @Override
-            public void onNewGame() {
-
-            }
+            public void onNewGame() { }
 
             @Override
             public void onMenu() {
-                try {
-                    screen.clear();
-                    menuFrame.drawFrame();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                switchFrame(GameFrame.MAIN_MENU_FRAME);
             }
 
             @Override
-            public void onContinue() {
+            public void onContinue() { }
 
-            }
+            @Override
+            public void onBack() { }
         });
+
     }
 
+    enum GameFrame{
+        MAIN_MENU_FRAME,
+        GAME_FRAME,
+        SETTINGS_FRAME
+    }
 }
