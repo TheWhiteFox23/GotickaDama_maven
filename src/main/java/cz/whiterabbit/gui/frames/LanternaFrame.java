@@ -136,6 +136,17 @@ abstract class LanternaFrame implements GUIFrame {
         rulesBox.putString(rulesText.withRelative(1,1), text, textSTyle);
     }
 
+    protected void drawColoredText(String text, int positionX, int positionY, TextColor.ANSI textColor,
+                                   TextColor.ANSI backgroundColor ){
+        TerminalPosition rulesText = new TerminalPosition(positionX+1, positionY+1);
+        TextGraphics textGraphics = screen.newTextGraphics();
+        textGraphics.setForegroundColor(textColor);
+        textGraphics.setBackgroundColor(backgroundColor);
+        textGraphics.putString(rulesText,text);
+        textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
+        textGraphics.setBackgroundColor(TextColor.ANSI.BLACK);
+    }
+
     protected void drawMenu(){
         if(lanternaMenu.size() != 0){
             for(int i = 0; i< lanternaMenu.size(); i++){

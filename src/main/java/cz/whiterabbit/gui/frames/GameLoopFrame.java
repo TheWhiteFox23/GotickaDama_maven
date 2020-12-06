@@ -7,7 +7,6 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
-import com.sun.source.tree.BreakTree;
 import cz.whiterabbit.elements.GameController;
 import cz.whiterabbit.elements.InvalidMoveException;
 import cz.whiterabbit.gui.frames.elements.GameSettings;
@@ -37,6 +36,11 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
     private byte[] lastMove = null;
     private boolean highlightMove = false;
 
+    //move selection menu
+    private List<byte[]> movesList = null;
+    private boolean multipleMoveSelection = false;
+    private int selectedIndex;
+
 
     public GameLoopFrame(Screen screen, GameController gameController, GameSettings gameSettings) {
         super(screen);
@@ -58,13 +62,14 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
         } else {
             operator = gameSettings.getBlackOperator();
         }
-
         if (!gameController.canContinue()) return FrameState.GAME_FINISH;
 
         switch (operator) {
             case HUMAN_PLAYER: {
                 if (promptForMove) {
                     return FrameState.INPUT_MENU;
+                }else if(multipleMoveSelection){
+                    return FrameState.MOVE_SELECTION_MENU;
                 } else {
                     return FrameState.PLAYER_MENU;
                 }
@@ -85,6 +90,7 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
                 case INPUT_MENU -> drawInputMenu();
                 case PLAYER_MENU -> drawPlayerMenu();
                 case COMPUTER_MENU -> drawComputerMenu();
+                case MOVE_SELECTION_MENU -> drawMoveSelectionMenu();
             }
             if (continueGame) {
                 manageMoveInput(gameController.isPlayerType());
@@ -103,6 +109,50 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
         if (lastMove!= null) drawBoard(2, 1, lastMove);
 
 
+    }
+
+    private void drawMoveSelectionMenu() {
+        drawBoard(gameController.getBoardArr(), 2, 1);
+        drawStatistics();
+        drawSimpleText("E - navigate back", 3,18);
+        drawSimpleText("up/down arrow - navigate in moves", 3,19);
+        drawSimpleText("Enter - confirm move selection", 3,20);
+        drawBorder("Available moves", 3, 11, 47, 8);
+        drawMovesList(3,11, 6);
+    }
+
+    private void drawMovesList(int positionX, int positionY, int height) {
+        if(movesList.size() <= height){
+            for(int i = 0; i< movesList.size(); i++){
+                if(i == selectedIndex){
+                    drawColoredText(parseMove(movesList.get(i)), positionX, positionY + i,
+                            TextColor.ANSI.WHITE, TextColor.ANSI.GREEN);
+                    lastMove = movesList.get(i);
+                }else{
+                    drawSimpleText(parseMove(movesList.get(i)), positionX, positionY + i);
+                }
+            }
+        }else if(movesList.size()>=height && (selectedIndex + height) >= movesList.size()){
+            for(int i = movesList.size()-height; i< movesList.size(); i++){
+                if(i == selectedIndex){
+                    drawColoredText(parseMove(movesList.get(i)), positionX, positionY + (i-movesList.size())+height,
+                            TextColor.ANSI.WHITE, TextColor.ANSI.GREEN);
+                    lastMove = movesList.get(i);
+                }else{
+                    drawSimpleText(parseMove(movesList.get(i)), positionX, positionY + ((i-movesList.size())+height));
+                }
+            }
+        }else if(movesList.size() > height && (selectedIndex + height)< movesList.size()){
+            for(int i = selectedIndex; i< selectedIndex+height; i++){
+                if(i == selectedIndex){
+                    drawColoredText(parseMove(movesList.get(i)), positionX, positionY + (i-selectedIndex),
+                            TextColor.ANSI.WHITE, TextColor.ANSI.GREEN);
+                    lastMove = movesList.get(i);
+                }else{
+                    drawSimpleText(parseMove(movesList.get(i)), positionX, positionY + (i-selectedIndex));
+                }
+            }
+        }
     }
 
     private void drawInputMenu() {
@@ -133,8 +183,10 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
     }
 
     private void drawPlayerMenu() {
+        if(gameController.getAllValidMoves().size() == 0)insertMoveAvailable = false;
         drawBoard(gameController.getBoardArr(), 2, 1);
         drawSimpleText("S - Change Settings", 3, 20);
+        if (insertMoveAvailable) drawSimpleText("L - Select moves from list of valid moves", 3, 17);
         if (insertMoveAvailable) drawSimpleText("I - Insert Move", 3, 19);
         if (!insertMoveAvailable) drawSimpleText("C - Continue", 3, 18);
         drawSimpleText("M - Main Menu", 3, 21);
@@ -162,15 +214,13 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
         drawSimpleText("Available moves: " + gameController.getAllValidMoves().size(), 20,3);
 
         //legend
-        drawBorder("Legend", 20, 7, 30,5);
-        highLightCell(21,8,TextColor.ANSI.GREEN);
-        drawSimpleText(" - Initial position" + getPlayerOnMove(), 22, 7);
-        highLightCell(21,9,TextColor.ANSI.CYAN);
-        drawSimpleText(" - Landing position/s" + getPlayerOnMove(), 22, 8);
-        highLightCell(21,10,TextColor.ANSI.MAGENTA);
-        drawSimpleText(" - Captured enemies" + getPlayerOnMove(), 22, 9);
-
-
+        drawBorder("Legend", 20, 6, 30,5);
+        highLightCell(21,7,TextColor.ANSI.GREEN);
+        drawSimpleText(" - Initial position", 22, 6);
+        highLightCell(21,8,TextColor.ANSI.CYAN);
+        drawSimpleText(" - Landing position/s", 22, 7);
+        highLightCell(21,9,TextColor.ANSI.MAGENTA);
+        drawSimpleText(" - Captured enemies", 22, 8);
     }
 
 
@@ -243,6 +293,41 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
             case PLAYER_MENU -> listenToPlayerMenu(keyStroke);
             case COMPUTER_MENU -> listenToComputerMenu(keyStroke);
             case GAME_FINISH -> listenToGameFinishMenu(keyStroke);
+            case MOVE_SELECTION_MENU -> listenToMoveSelectionMenu(keyStroke);
+        }
+    }
+
+    private void listenToMoveSelectionMenu(KeyStroke keyStroke) {
+        if (keyStroke != null && (keyStroke.getKeyType() != KeyType.EOF || keyStroke.getKeyType() != KeyType.Escape)) {
+            if (keyStroke.getKeyType() == KeyType.Character && keyStroke.getCharacter() == 'e') {
+                lastMove = null;
+                multipleMoveSelection = false;
+                getScreen().clear();
+                invalidate();
+            }else if(keyStroke.getKeyType() == KeyType.ArrowUp){
+                if(selectedIndex == 0){
+                    selectedIndex = movesList.size()-1;
+                }else{
+                    selectedIndex--;
+                }
+                invalidate();
+                //System.out.println("selected index: " + selectedIndex + " object: " +movesList.get(selectedIndex));
+            }else if(keyStroke.getKeyType() == KeyType.ArrowDown){
+                selectedIndex = (selectedIndex+1)%movesList.size();
+                invalidate();
+                //System.out.println("selected index: " + selectedIndex + " object: " +movesList.get(selectedIndex));
+            }else if(keyStroke.getKeyType() == KeyType.Enter){
+                try {
+                    gameController.applyMove(movesList.get(selectedIndex));
+                    insertMoveAvailable = false;
+                    multipleMoveSelection = false;
+                    getScreen().clear();
+                    invalidate();
+                } catch (InvalidMoveException e) {
+                    e.printStackTrace();
+                }
+                //todo add confirm move logic
+            }
         }
     }
 
@@ -280,6 +365,12 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
                 continueLoop();
             } else if (keyStroke.getKeyType() == KeyType.Character && keyStroke.getCharacter() == 'm') {
                 if (getFrameListener() != null) getFrameListener().onMenu();
+            }else if(keyStroke.getKeyType() == KeyType.Character && keyStroke.getCharacter() == 'l' && insertMoveAvailable){
+                multipleMoveSelection = true;
+                movesList = gameController.getAllValidMoves();
+                selectedIndex = 0;
+                getScreen().clear();
+                invalidate();
             }
         }
     }
@@ -442,13 +533,7 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
                     correspondingMoves.add(by);
                 }
             }
-            for (byte[] by : correspondingMoves) {
-                for (byte b : by) {
-                    System.out.print(b + ", ");
-                }
-                System.out.println();
-            }
-            if (correspondingMoves.size() >= 1) {
+            if (correspondingMoves.size() == 1) {
                 try {
                     gameController.applyMove(correspondingMoves.get(0));
                     errorTextVisible = false;
@@ -457,14 +542,22 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
                     e.printStackTrace();
                 }
                 return true;
-            } else {
+            } else if (correspondingMoves.size() == 0) {
                 errorTextVisible = true;
                 return false;
+            }else if(correspondingMoves.size() >1){
+                movesList=correspondingMoves;
+                multipleMoveSelection = true;
+                selectedIndex = 0;
+                getScreen().clear();
+                invalidate();
+                return true;
             }
         } else {
             errorTextVisible = true;
             return false;
         }
+        return false;
     }
 
     private byte[] validateMove(String move) {
@@ -516,7 +609,8 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
         PLAYER_MENU,
         INPUT_MENU,
         COMPUTER_MENU,
-        GAME_FINISH;
+        GAME_FINISH,
+        MOVE_SELECTION_MENU,
     }
 
 }

@@ -23,7 +23,7 @@ public class GameController {
 
     //TESTED
     public void startGame(){
-        System.out.println("START GAME CALL");
+        //System.out.println("START GAME CALL");
         resetGame();
         gameState = GameState.IN_PROGRESS;
     }
