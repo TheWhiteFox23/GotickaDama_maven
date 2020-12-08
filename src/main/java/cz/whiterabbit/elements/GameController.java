@@ -38,8 +38,12 @@ public class GameController {
 
     //tested
     public void applyMove(byte[] move) throws InvalidMoveException {
+        applyMove(board.getBoardArr(), move);
+    }
+
+    public void applyMove(byte[] board, byte[] move) throws InvalidMoveException {
         if(isValidMove(move)){
-            board.applyMove(move);
+            board = this.board.applyMove(board, move);
             judge.validateBoard(board);
             moveMemory.addMove(move);
             moveMemory.invalidateMemory();
@@ -55,18 +59,15 @@ public class GameController {
 
     //tested
     public List<byte[]> getAllValidMoves(){
-        if(!moveMemory.isValid()){
-            moveMemory.setCurrentPossibleMoves(moveGenerator.getAllMovesForPlayer(playerType, board.getBoardArr(), new MostCaptureEnemiesFilter()));
-        }
-        return moveMemory.getCurrentPossibleMoves();
+        return getAllValidMoves( board.getBoardArr(), playerType);
     }
 
     public boolean canContinue(){
-        //System.out.println("canContinue CALL");
-        if(gameState != GameState.NOT_STARTED){ //so the NOT_STARTED game state is not overwritten
-            gameState = judge.getCurrentGameState(board, moveMemory);
-        }
-        switch(gameState){
+        return canContinue(board.getBoardArr());
+    }
+
+    private boolean validateGameState() {
+        switch (gameState) {
             case DRAW:
             case POSITIVE_WIN:
             case NEGATIVE_WIN:
@@ -107,5 +108,17 @@ public class GameController {
         moveMemory.resetMemory();
         playerType = true;
         gameState = GameState.NOT_STARTED;
+    }
+    public boolean canContinue(byte[] board){
+        if(gameState != GameState.NOT_STARTED){ //so the NOT_STARTED game state is not overwritten
+            gameState = judge.getCurrentGameState(board, moveMemory);
+        }
+        return validateGameState();
+    }
+    public List<byte[]> getAllValidMoves(byte[] board, boolean playerType){
+        if(!moveMemory.isValid()){
+            moveMemory.setCurrentPossibleMoves(moveGenerator.getAllMovesForPlayer(playerType, board, new MostCaptureEnemiesFilter()));
+        }
+        return moveMemory.getCurrentPossibleMoves();
     }
 }

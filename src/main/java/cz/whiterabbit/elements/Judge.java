@@ -47,11 +47,19 @@ public class Judge {
      */
     //TESTED
     public void validateBoard(Board board) {
-        for(int i = 0; i<board.getBoardArr().length; i++){
-            if(board.getBoardArr()[i] == -1 && i<=7){
-                board.getBoardArr()[i] = -2;
-            }else if ((board.getBoardArr()[i] == 1 && i>=56 && i<=63)){
-                board.getBoardArr()[i] = 2;
+        validateBoard(board.getBoardArr());
+    }
+    /**
+     * adjust board according to rules
+     * @param board
+     */
+    //TESTED
+    public void validateBoard(byte[] board) {
+        for(int i = 0; i<board.length; i++){
+            if(board[i] == -1 && i<=7){
+                board[i] = -2;
+            }else if ((board[i] == 1 && i>=56 && i<=63)){
+                board[i] = 2;
             }
         }
     }
@@ -64,6 +72,16 @@ public class Judge {
      */
     //TESTED
     public GameState getCurrentGameState(Board board, MoveMemory moveMemory) {
+        return getCurrentGameState(board.getBoardArr(), moveMemory);
+    }
+
+    /**
+     * Return actual game state
+     * @param board
+     * @param moveMemory
+     * @return
+     */
+    public GameState getCurrentGameState(byte[] board, MoveMemory moveMemory) {
         if(!isCaptureInLast30(moveMemory)){
             return getWiningPlayer(board);
         }else{
@@ -115,18 +133,43 @@ public class Judge {
     }
 
     /**
+     * Get winning player in case tha there is 30 moves in memory with no capture
+     * @param board
+     * @return
+     */
+    protected GameState getWiningPlayer(byte[] board){
+        int[] count = getPeaceCount(board);
+        if(count[0] > count[1]){
+            return GameState.NEGATIVE_WIN;
+        }else if( count[0] < count[1]){
+            return GameState.POSITIVE_WIN;
+        }else{
+            return GameState.DRAW;
+        }
+    }
+
+    /**
      * return array in form {negativeCount, positiveCount}
      * @param board
      * @return
      */
     //TESTED
     protected int[] getPeaceCount(Board board){
+        return getPeaceCount(board.getBoardArr());
+    }
+
+    /**
+     * return array in form {negativeCount, positiveCount}
+     * @param board
+     * @return
+     */
+    protected int[] getPeaceCount(byte[] board){
         int negativeCount = 0;
         int positiveCount = 0;
-        for(int i = 0; i< board.getBoardArr().length; i++){
-            if(board.getBoardArr()[i] > 0){
+        for(int i = 0; i< board.length; i++){
+            if(board[i] > 0){
                 positiveCount++;
-            }else if(board.getBoardArr()[i]<0){
+            }else if(board[i]<0){
                 negativeCount++;
             }
         }
