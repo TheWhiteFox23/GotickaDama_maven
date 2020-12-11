@@ -31,24 +31,14 @@ public class Board {
     }
 
     public byte[] applyMove(byte[] move){
-        for(int i = 0; i< move.length; i+=3){
-            boardArr[move[i]]=move[i+2];
-        }
-        return getBoardArr();
+        return applyMove(getBoardArr(), move);
     }
 
-    //todo test method
     public byte[] applyMove(byte[] board, byte[] move){
         for(int i = 0; i< move.length; i+=3){
             board[move[i]]=move[i+2];
         }
         return board;
-    }
-
-    public byte[] applyMove(Move move){
-        byte[] moveArr = move.getMoveArr();
-        applyMove(moveArr);
-        return getBoardArr();
     }
 
     public void setBoard(byte[] boardArr){

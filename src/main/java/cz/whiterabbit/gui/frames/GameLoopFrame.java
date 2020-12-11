@@ -7,8 +7,11 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
+import cz.whiterabbit.elements.ComputerPlayer;
 import cz.whiterabbit.elements.GameController;
 import cz.whiterabbit.elements.InvalidMoveException;
+import cz.whiterabbit.elements.MinimaxComputerPlayer;
+import cz.whiterabbit.elements.RandomComputerPlayer;
 import cz.whiterabbit.gui.frames.elements.GameSettings;
 import cz.whiterabbit.gui.frames.elements.PlayerOperator;
 
@@ -41,12 +44,18 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
     private boolean multipleMoveSelection = false;
     private int selectedIndex;
 
+    //Computer Players
+    private ComputerPlayer randomComputerPlayer;
+    private ComputerPlayer minimaxComputerPlayer;
+
 
     public GameLoopFrame(Screen screen, GameController gameController, GameSettings gameSettings) {
         super(screen);
         this.gameController = gameController;
         this.gameSettings = gameSettings;
         this.frameState = getFrameState();
+        this.randomComputerPlayer = new RandomComputerPlayer();
+        this.minimaxComputerPlayer = new MinimaxComputerPlayer();
     }
 
     /**
@@ -55,13 +64,9 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
      * @return
      */
     private FrameState getFrameState() {
-        PlayerOperator operator;
+        //PlayerOperator operator;
         boolean positivePlayerOnMOve = gameController.isPlayerType();
-        if (positivePlayerOnMOve) {
-            operator = gameSettings.getWhiteOperator();
-        } else {
-            operator = gameSettings.getBlackOperator();
-        }
+        PlayerOperator operator = getPlayerOperator(positivePlayerOnMOve);
         if (!gameController.canContinue()) return FrameState.GAME_FINISH;
 
         switch (operator) {
@@ -94,8 +99,6 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
             }
             if (continueGame) {
                 manageMoveInput(gameController.isPlayerType());
-                //todo - move highlight
-
             }
 
         } else {
@@ -246,39 +249,43 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
     }
 
     private void manageMoveInput(boolean positiveOnMove) {
+        switch (getPlayerOperator(positiveOnMove)) {
+            case HUMAN_PLAYER:{
+                break;
+            }
+            case COMPUTER_MINIMAX: {
+                applyPlayerMove(minimaxComputerPlayer);
+                break;
+            }
+            case COMPUTER_RANDOM: {
+                applyPlayerMove(randomComputerPlayer);
+            }
+        }
+    }
+
+    private PlayerOperator getPlayerOperator(boolean positiveOnMove) {
         PlayerOperator operator;
         if (positiveOnMove) {
             operator = gameSettings.getWhiteOperator();
         } else {
             operator = gameSettings.getBlackOperator();
         }
+        return operator;
+    }
 
-        switch (operator) {
-            case HUMAN_PLAYER:
-            case COMPUTER_MINIMAX: {
-                //todo applyMove(playerMinimax.chooseTheMove(moves))
-                break;
-            }
-            case COMPUTER_RANDOM: {
-                try {
-                    byte[] move = chooseRandomMove(gameController.getAllValidMoves());
-                    //drawBoard(gameController.getBoardArr(), 2,1 ,move);
-                    lastMove = move;
-                    highlightMove = true;
-                    gameController.applyMove(move);
-                } catch (InvalidMoveException e) {
-                    e.printStackTrace();
-                }
-                continueGame = false;
-                invalidate();
-            }
+    private void applyPlayerMove(ComputerPlayer computerPlayer) {
+        try {
+            byte[] move = computerPlayer.chooseMove(gameController.getBoardArr(), gameController.isPlayerType());
+            lastMove = move;
+            highlightMove = true;
+            gameController.applyMove(move);
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
         }
+        continueGame = false;
+        invalidate();
     }
 
-    private byte[] chooseRandomMove(List<byte[]> allValidMoves) {
-        Random random = new Random();
-        return allValidMoves.get(random.nextInt(allValidMoves.size()));
-    }
 
     @Override
     void onListen() {
