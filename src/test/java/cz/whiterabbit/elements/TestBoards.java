@@ -214,6 +214,42 @@ public class TestBoards {
             -1,-1,-1,-1,-1,-1,-1,-1,
     };
 
+    private byte[] minimaxTest = new byte[]{
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 0, 1, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            1, 0,-1, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+
+    };
+
+    private byte[] minimaxTest2 = new byte[]{
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 1, 1, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            1, 0,-1, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+
+    };
+   private byte[] minimaxTest3 = new byte[]{
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 1, 0,-1,0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            1, 0,-1, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+
+    };
+
+
 
 
 
@@ -289,5 +325,17 @@ public class TestBoards {
 
     public byte[] getNoMovesFinish() {
         return noMovesFinish;
+    }
+
+    public byte[] getMinimaxTest() {
+        return minimaxTest;
+    }
+
+    public byte[] getMinimaxTest2() {
+        return minimaxTest2;
+    }
+
+    public byte[] getMinimaxTest3() {
+        return minimaxTest3;
     }
 }

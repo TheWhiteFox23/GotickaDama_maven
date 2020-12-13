@@ -7,18 +7,18 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
-import cz.whiterabbit.elements.ComputerPlayer;
+import cz.whiterabbit.elements.computerplayer.ComputerPlayer;
 import cz.whiterabbit.elements.GameController;
 import cz.whiterabbit.elements.InvalidMoveException;
-import cz.whiterabbit.elements.MinimaxComputerPlayer;
-import cz.whiterabbit.elements.RandomComputerPlayer;
+import cz.whiterabbit.elements.computerplayer.MinimaxComputerPlayer;
+import cz.whiterabbit.elements.computerplayer.RandomComputerPlayer;
 import cz.whiterabbit.gui.frames.elements.GameSettings;
+import cz.whiterabbit.gui.frames.elements.PlayerLevel;
 import cz.whiterabbit.gui.frames.elements.PlayerOperator;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class GameLoopFrame extends LanternaFrame implements GUIFrame {
     private GameController gameController;
@@ -192,6 +192,7 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
         if (insertMoveAvailable) drawSimpleText("L - Select moves from list of valid moves", 3, 17);
         if (insertMoveAvailable) drawSimpleText("I - Insert Move", 3, 19);
         if (!insertMoveAvailable) drawSimpleText("C - Continue", 3, 18);
+        if (insertMoveAvailable) drawSimpleText("V - Suggest Move (based on set difficulty)", 3, 16);
         drawSimpleText("M - Main Menu", 3, 21);
         //drawSimpleText("Player on move : " + getPlayerOnMove(), 20, 3);
         drawStatistics();
@@ -249,6 +250,7 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
     }
 
     private void manageMoveInput(boolean positiveOnMove) {
+        actualizeDifficulty(positiveOnMove);
         switch (getPlayerOperator(positiveOnMove)) {
             case HUMAN_PLAYER:{
                 break;
@@ -260,6 +262,26 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
             case COMPUTER_RANDOM: {
                 applyPlayerMove(randomComputerPlayer);
             }
+        }
+    }
+
+    private void actualizeDifficulty(boolean playerOnMove) {
+        PlayerLevel level;
+        if (playerOnMove) {
+            level = gameSettings.getWhitePlayerLevel();
+        } else {
+            level = gameSettings.getBlackPlayerLevel();
+        }
+        int difficulty = getDifficulty(level);
+        minimaxComputerPlayer.setDifficulty(difficulty);
+    }
+
+    private int getDifficulty(PlayerLevel level) {
+        switch (level){
+            case EASY : return 3;
+            case HARD : return 7;
+            case MEDIUM :
+            default: return 5;
         }
     }
 
@@ -375,6 +397,13 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
             }else if(keyStroke.getKeyType() == KeyType.Character && keyStroke.getCharacter() == 'l' && insertMoveAvailable){
                 multipleMoveSelection = true;
                 movesList = gameController.getAllValidMoves();
+                selectedIndex = 0;
+                getScreen().clear();
+                invalidate();
+            }else if (keyStroke.getKeyType() == KeyType.Character && keyStroke.getCharacter() == 'v' && insertMoveAvailable){
+                multipleMoveSelection = true;
+                movesList = new ArrayList<>();
+                movesList.add(minimaxComputerPlayer.chooseMove(gameController.getBoardArr(), gameController.isPlayerType()));
                 selectedIndex = 0;
                 getScreen().clear();
                 invalidate();
@@ -567,6 +596,11 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
         return false;
     }
 
+    /**
+     * Validate player move input, return converted byte[] representing the move if valid and null otherwise
+     * @param move
+     * @return
+     */
     private byte[] validateMove(String move) {
         move = move.toLowerCase();
         char[] validDigits = "12345678".toCharArray();
@@ -591,6 +625,8 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
                     }
                 }
             }
+
+            //todo this method can be separated - refactor after unit testing
             //System.out.println("digit: " + digit + " character: " +character);
             if (digit != -1 && character != -1) {
                 byte placeOnBoar = (byte) ((digit * 8 + character));

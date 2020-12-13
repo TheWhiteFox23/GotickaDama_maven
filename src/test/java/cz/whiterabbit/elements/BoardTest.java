@@ -15,16 +15,7 @@ class BoardTest {
         testBoards = new TestBoards();
         board = new Board();
     }
-    /*
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 1, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 1, 0, 1, 0,
-            0, 0, 0, 1, 0, 0, 0, 0,
-            0, 0, 0, 0, 1, 0, 0, 0,
-            0, 0, 0, 0,-2, 0, 0, 0,
-     */
+
 
     @Test
     @DisplayName("Apply move test")

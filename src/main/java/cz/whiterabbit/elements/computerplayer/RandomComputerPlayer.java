@@ -1,6 +1,5 @@
-package cz.whiterabbit.elements;
+package cz.whiterabbit.elements.computerplayer;
 
-import cz.whiterabbit.elements.ComputerPlayer;
 import cz.whiterabbit.elements.MoveChecker;
 
 import java.util.List;
@@ -20,4 +19,10 @@ public class RandomComputerPlayer implements ComputerPlayer {
         List<byte[]> moves = moveChecker.getAllValidMoves(state, player);
         return moves.get(random.nextInt(moves.size()));
     }
+
+    @Override
+    public void setDifficulty(int difficulty) {
+
+    }
+
 }
