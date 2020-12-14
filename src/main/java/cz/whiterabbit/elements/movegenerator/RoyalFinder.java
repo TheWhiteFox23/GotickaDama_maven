@@ -22,8 +22,6 @@ public class RoyalFinder implements Finder {
      * @return List<byte> representing all possible moves</>
      */
     protected List<byte[]> getMovesFromPositionRoyal(byte position, byte[] board, byte[] initialMove){
-        //logging
-        if(log) System.out.println("Starting get moves from position ROYAL");
 
         List<byte[]> moves = new ArrayList<>();
 
@@ -37,97 +35,72 @@ public class RoyalFinder implements Finder {
         byte activePeace = -2;
         if(playerType)activePeace = 2;
 
-        //logging
-        if(log) System.out.println("  \\__Getting player type nad active peace : " + activePeace);
 
         byte[] captureEnemiesInSurrounding = getCaptureEnemiesRoyal(position, board, activePeace);
 
-        //logging
-        if(log) System.out.println("  \\__Getting available enemies. Array length : " + captureEnemiesInSurrounding.length);
         if(captureEnemiesInSurrounding.length != 0){ //found valid enemy
-            //logging
-            if(log) System.out.println("     \\__Valid enemies found");
-            boolean foundNonCapturedEnemies = false;
-
-
-            for(int i = 0; i<captureEnemiesInSurrounding.length; i+=2 ){
-
-                byte[] nonCapturedEnemies = filterCapturedEnemies(captureEnemiesInSurrounding,initialMove);
-
-                //todo replace block with filterCapturedEnemies function (!!!!After method is covered with tests!!!!)
-                if(initialMove != null){
-                    //logging
-                    if(log) System.out.println("        \\__initialMove != null searching already captured enemies");
-                    boolean enemyAlreadyCaptured = false;
-                    for(int j = 0; j< initialMove.length; j+=3){
-                        //System.out.println("i : " + i);
-                        //System.out.println("j : " + j);
-                        if(initialMove[j]==captureEnemiesInSurrounding[i]){
-                            //System.out.println("initial move length : " + initialMove.length);
-                            //logging
-                            if(log) System.out.println("        \\__found captured enemy, continue " + initialMove + "position : " +captureEnemiesInSurrounding[i]);
-                            enemyAlreadyCaptured = true;
-                            break;
-                        }
-                    }
-                    if(enemyAlreadyCaptured){
-                        continue;
-                    }else{
-                        foundNonCapturedEnemies = true;
-                    }
-                }else{
-                    foundNonCapturedEnemies = true;
-                }
-                byte[] landingLocations = getLandingLocations(captureEnemiesInSurrounding[i], captureEnemiesInSurrounding[i+1], board);
-                //logging
-                if(log) System.out.println("        \\__search for available landing positions ");
-                for(byte b: landingLocations){
-                    byte[] newInitialMove = new byte[]{position, activePeace, 0, captureEnemiesInSurrounding[i], board[captureEnemiesInSurrounding[i]], 0, b, 0, activePeace};
-                    if(initialMove != null){
-                        //logging
-                        if(log) System.out.println("        \\__merging new move with initial move ");
-                        byte[] merge = new byte[initialMove.length+newInitialMove.length];
-                        System.arraycopy(initialMove, 0, merge, 0, initialMove.length);
-                        System.arraycopy(newInitialMove, 0, merge, initialMove.length, newInitialMove.length);
-                        newInitialMove = merge;
-                    }
-                    //logging
-                    if(log) System.out.println("        \\__asking for new query");
-                    moves.addAll(getMovesFromPositionRoyal(b,board, newInitialMove));
-                }
-            }
-            if(!foundNonCapturedEnemies){
-                //logging
-                if(log) System.out.println("        \\__all found enemies was already captured");
-                moves.add(initialMove);
-            }
-
-            //initialize moves from every possible landing location
-        }else{ // no valid enemy
-            //logging
-            if(log) System.out.println("        \\__no enemies found ");
+            manageCaptureEnemies(position, board, initialMove, moves, activePeace, captureEnemiesInSurrounding);
+        }else{
             if(initialMove == null){
-                //logging
-                if(log) System.out.println("        \\__initial move is null ");
                 byte[] directionsToTest = new byte[]{1,-1,7,-7,8,-8,9,-9};
 
-                //logging
-                if(log) System.out.println("        \\__adding available landing position in to move ");
                 for(byte b : directionsToTest){
                     byte[] emptySpacesInDirections = getLandingLocations(position, b, board);
                     for(byte s:emptySpacesInDirections){
-                        //logging
-                        if(log) System.out.println("        \\__adding position");
                         moves.add(new byte[]{position, activePeace, 0, s,0, activePeace});
                     }
                 }
             }else{
-                //logging
-                if(log) System.out.println("        \\__initial move not null, adding initial move");
                 moves.add(initialMove);
             }
         }
         return moves;
+    }
+
+
+    /**
+     * Add capture moves for all possible enemies
+     * @param position
+     * @param board
+     * @param initialMove
+     * @param moves
+     * @param activePeace
+     * @param captureEnemiesInSurrounding
+     */
+    private void manageCaptureEnemies(byte position, byte[] board, byte[] initialMove, List<byte[]> moves, byte activePeace, byte[] captureEnemiesInSurrounding) {
+        boolean foundNonCapturedEnemies = false;
+        for(int i = 0; i< captureEnemiesInSurrounding.length; i+=2 ){
+            if(initialMove != null){
+                boolean enemyAlreadyCaptured = false;
+                for(int j = 0; j< initialMove.length; j+=3){
+                    if(initialMove[j]== captureEnemiesInSurrounding[i]){
+                        enemyAlreadyCaptured = true;
+                        break;
+                    }
+                }
+                if(enemyAlreadyCaptured){
+                    continue;
+                }else{
+                    foundNonCapturedEnemies = true;
+                }
+            }else{
+                foundNonCapturedEnemies = true;
+            }
+            byte[] landingLocations = getLandingLocations(captureEnemiesInSurrounding[i], captureEnemiesInSurrounding[i+1], board);
+            for(byte b: landingLocations){
+                byte[] newInitialMove = new byte[]{position, activePeace, 0, captureEnemiesInSurrounding[i], board[captureEnemiesInSurrounding[i]], 0, b, 0, activePeace};
+                if(initialMove != null){
+                    byte[] merge = new byte[initialMove.length+newInitialMove.length];
+                    System.arraycopy(initialMove, 0, merge, 0, initialMove.length);
+                    System.arraycopy(newInitialMove, 0, merge, initialMove.length, newInitialMove.length);
+                    newInitialMove = merge;
+                }
+                moves.addAll(getMovesFromPositionRoyal(b, board, newInitialMove));
+            }
+        }
+        if(!foundNonCapturedEnemies){
+            moves.add(initialMove);
+        }
     }
 
     /**
@@ -137,37 +110,24 @@ public class RoyalFinder implements Finder {
      * @return byte[] with position of the enemies and directions in format {enemy_0, direction_0, enemy_1, direction_1,... enemy_n, direction_n}
      */
     protected byte[] getCaptureEnemiesRoyal(byte position, byte[] board, byte activePeace) {
-        //logging
-        if(log) System.out.println("getCaptureEnemiesRoyal");
         byte[] enemiesCapture = new byte[16];
         int arrayPointer = 0;
-        //modified flood-fill algorithm - for every possible direction goes until it founds space different from empty,
-        //or until it is out of the board. If the different box is enemy, look if enemy can be captured, if not, move to another direction.
         byte[] directionsToCheck= new byte[]{-1,7,8,9,1,-9,-8,-7};
         for(byte b: directionsToCheck){
-            //logging
-            if(log) System.out.println(" \\__Initialize values --- direction : " + b);
 
             byte directionIncrement = 1;
             if(b == 1 || b == -1)directionIncrement = 0;
             byte currentPosition = position;
             boolean enemyFound = false;
-            //logging
-            if(log) System.out.println("  \\__Entering Loop");
 
             while(currentPosition+b < 64 && currentPosition+b >= 0 && Math.abs(currentPosition/8 - (currentPosition+b)/8) == directionIncrement){
-                //logging
-                if(log) System.out.println("      \\__increment position new position = " + (currentPosition + b));
+
 
                 currentPosition += b;
                 if(((activePeace < 0 && board[currentPosition] > 0) || (activePeace > 0 && board[currentPosition] < 0))&&!enemyFound){
-                    //logging
-                    if(log) System.out.println("         \\__found enemy on current position");
 
                     enemyFound = true;
                 }else if(enemyFound && board[currentPosition] == 0){
-                    //logging
-                    if(log) System.out.println("         \\__zero after enemy writing to array and continue");
 
                     enemiesCapture[arrayPointer] = (byte)(currentPosition-b);
                     arrayPointer++;
@@ -175,8 +135,6 @@ public class RoyalFinder implements Finder {
                     arrayPointer++;
                     break;
                 }else if (enemyFound && board[currentPosition] != 0){
-                    //logging
-                    if(log) System.out.println("         \\__enemy can't be captured, break");
 
                     break;
                 }

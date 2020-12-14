@@ -1,5 +1,7 @@
 package cz.whiterabbit.elements.movegenerator;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,116 +29,113 @@ public class RegularFinder implements Finder{
         try{
             positive = MoveGeneratorUtilities.moveGeneratorUtilities().getPlayerType(position, board, initialMove);
         }catch (Exception e){
-            System.out.println("unable to determinate layer type from given values : " + e.getMessage());
+            System.out.println("unable to determinate player type from given values : " + e.getMessage());
             return null;
         }
         byte activePeace = 1;
         if(!positive)activePeace = -1;
-        // getting peace surrounding
-        byte[] availableSurrounding = getAvailableSurroundings(position, board, positive);
 
+        byte[] availableSurrounding = getAvailableSurroundings(position, board, positive);
         byte[] enemiesInSurrounding = getEnemies(availableSurrounding, board, positive);
         byte[] emptySpacesInSurrounding = getEmptySpaces(availableSurrounding, board);
-        if(enemiesInSurrounding.length == 0){
-            if(log)System.out.println("No enemies in Surrounding");
-            if(emptySpacesInSurrounding.length == 0){
-                if(log)System.out.println("No empty spaces in surrounding");
-                if(initialMove == null){
-                    if(log)System.out.println("No initial move - return NULL");
-                    return null;
-                }else{
-                    if(log)System.out.println("Initial move found - add initial move");
-                    moves.add(initialMove);
-                    return moves;
-                }
-            }else{
-                if(log)System.out.println("Found empty spaces in surrounding");
-                if(initialMove == null){
-                    if(log)System.out.println("No initial move found");
-                    for(byte b : emptySpacesInSurrounding){
-                        if(log)System.out.println("Adding moves");
-                        moves.add(new byte[]{position, activePeace, 0, b,board[b], board[position]});
-                    }
-                }else{
-                    if(log)System.out.println("Initial Move found -> adding Initial Move");
-                    moves.add(initialMove);
-                    return moves;
-                }
-            }
 
+        if(enemiesInSurrounding.length == 0){
+            return manageNoCaptureEnemies(position, board, initialMove, moves, activePeace, emptySpacesInSurrounding);
         }else{
-            if(log)System.out.println("Enemies found");
             byte[] capturedEnemies = getCaptureEnemies(enemiesInSurrounding, position, board);
             if(capturedEnemies.length == 0){
-                if(log)System.out.println("No Enemies can Be Captured");
-                if(emptySpacesInSurrounding.length == 0){
-                    if(log)System.out.println("No empty spaces in surrounding");
-                    if(initialMove == null){
-                        if(log)System.out.println("figure cant move");
-                        return null;
-                    }else{
-                        if(log)System.out.println("adding initial move");
-                        moves.add(initialMove);
-                        return moves;
-                    }
-                }else{
-                    if(log)System.out.println("found empty spaces in surrounding");
-                    if(initialMove == null){
-                        if(log)System.out.println("No initial move");
-                        for(byte b : emptySpacesInSurrounding){
-                            if(log)System.out.println("adding moves");
-                            moves.add(new byte[]{position, activePeace, 0, b, 0, activePeace});
-                        }
-                    }else{
-                        if(log)System.out.println("Found initial move -> adding move");
-                        moves.add(initialMove);
-                    }
-                    return moves;
-                }
+                return manageNoCaptureEnemies(position, board, initialMove, moves, activePeace, emptySpacesInSurrounding);
             }else{
-                if(log)System.out.println("Found enemies that can be captured");
-                //enemy position was already captured
-                //look if enemy was already captured
-
                 if(initialMove != null){
-                    //todo problem is right here find it !!!!!
-                    if(log)System.out.println("Initial move found -> searching enemies");
-                    boolean foundValidEnemy = false;
-                    for(int i = 0; i<capturedEnemies.length; i+=2){
-                        boolean alreadyCaptured = false;
-                        for(int j = 0; j< initialMove.length; j += 3) {
-                            if(capturedEnemies[i] == initialMove[j]){
-                                if(log)System.out.println("Enemy already captured");
-                                alreadyCaptured = true;
-                                break;
-                            }
-                        }
-                        if(!alreadyCaptured){
-                            foundValidEnemy = true;
-                            if(log)System.out.println("Enemy wasn't already captured -> capturing enemy");
-                            byte[] newMove = new byte[]{position, activePeace, 0,capturedEnemies[i], board[capturedEnemies[i]], 0, capturedEnemies[i+1], board[capturedEnemies[i+1]], activePeace };
-                            byte[] newInitialMove = new byte[initialMove.length + newMove.length];
-                            System.arraycopy(initialMove, 0, newInitialMove, 0, initialMove.length);;
-                            System.arraycopy(newMove, 0, newInitialMove, initialMove.length, newMove.length);
-                            //System.out.println();
-                            //System.out.println("Asking for new query from new position");
-                            List<byte[]> queryResult = gerMovesFromPositionRegular(capturedEnemies[i+1], board, newInitialMove);
-                            //System.out.println(queryResult);
-                            moves.addAll(gerMovesFromPositionRegular(capturedEnemies[i+1], board, newInitialMove));
-                        }
-                    }
-                    if(!foundValidEnemy){
-                        if(log)System.out.println("No valid enemies found -> inserting initial move");
-                        moves.add(initialMove);
-                    }
+                    manageCaptureEnemies(position, board, initialMove, moves, activePeace, capturedEnemies);
                 }else{
-                    if(log)System.out.println("No initial move found, generating initial moves");
-                    for(int i = 0; i<capturedEnemies.length; i+=2){
-                        byte[] newMove = new byte[]{position, activePeace, 0,capturedEnemies[i], board[capturedEnemies[i]], 0, capturedEnemies[i+1], board[capturedEnemies[i+1]], activePeace };
-                        if(log)System.out.println("Asking for the query from the new point");
-                        moves.addAll(gerMovesFromPositionRegular(capturedEnemies[i+1], board, newMove));
-                    }
+                    captureAllEnemies(position, board, moves, activePeace, capturedEnemies);
                 }
+            }
+        }
+        return moves;
+    }
+
+    /**
+     * Helper method, add all capture enemies into the moves list
+     * @param position
+     * @param board
+     * @param moves
+     * @param activePeace
+     * @param capturedEnemies
+     */
+    private void captureAllEnemies(byte position, byte[] board, List<byte[]> moves, byte activePeace, byte[] capturedEnemies) {
+        for(int i = 0; i< capturedEnemies.length; i+=2){
+            byte[] newMove = new byte[]{position, activePeace, 0, capturedEnemies[i], board[capturedEnemies[i]], 0, capturedEnemies[i+1], board[capturedEnemies[i+1]], activePeace};
+            moves.addAll(gerMovesFromPositionRegular(capturedEnemies[i+1], board, newMove));
+        }
+    }
+
+    /**
+     * Merge the current capture with initial move and add into moves list
+     * @param position
+     * @param board
+     * @param initialMove
+     * @param moves
+     * @param activePeace
+     * @param capturedEnemies
+     */
+    private void manageCaptureEnemies(byte position, byte[] board, byte[] initialMove, List<byte[]> moves, byte activePeace, byte[] capturedEnemies) {
+        boolean foundValidEnemy = false;
+        for(int i = 0; i< capturedEnemies.length; i+=2){
+            boolean alreadyCaptured = false;
+            for(int j = 0; j< initialMove.length; j += 3) {
+                if(capturedEnemies[i] == initialMove[j]){
+                    alreadyCaptured = true;
+                    break;
+                }
+            }
+            if(!alreadyCaptured){
+                foundValidEnemy = true;
+                mergeNewMoveWithInitial(new byte[]{position, activePeace, 0, capturedEnemies[i], board[capturedEnemies[i]], 0, capturedEnemies[i + 1], board[capturedEnemies[i + 1]], activePeace}
+                , board, initialMove, moves, capturedEnemies, i);
+            }
+        }
+        if(!foundValidEnemy){
+            moves.add(initialMove);
+        }
+    }
+
+    private void mergeNewMoveWithInitial(byte[] newMove1, byte[] board, byte[] initialMove, List<byte[]> moves, byte[] capturedEnemies, int i) {
+        byte[] newMove = newMove1;
+        byte[] newInitialMove = new byte[initialMove.length + newMove.length];
+        System.arraycopy(initialMove, 0, newInitialMove, 0, initialMove.length);
+        System.arraycopy(newMove, 0, newInitialMove, initialMove.length, newMove.length);
+        moves.addAll(gerMovesFromPositionRegular(capturedEnemies[i+1], board, newInitialMove));
+    }
+
+    /**
+     * Add all simple moves into the moves list in case there are no enemies or non of them can be capture.
+     * @param position
+     * @param board
+     * @param initialMove
+     * @param moves
+     * @param activePeace
+     * @param emptySpacesInSurrounding
+     * @return
+     */
+    @Nullable
+    private List<byte[]> manageNoCaptureEnemies(byte position, byte[] board, byte[] initialMove, List<byte[]> moves, byte activePeace, byte[] emptySpacesInSurrounding) {
+        if(emptySpacesInSurrounding.length == 0){
+            if(initialMove == null){
+                return null;
+            }else{
+                moves.add(initialMove);
+                return moves;
+            }
+        }else {
+            if (initialMove == null) {
+                for (byte b : emptySpacesInSurrounding) {
+                    moves.add(new byte[]{position, activePeace, 0, b, board[b], board[position]});
+                }
+            } else {
+                moves.add(initialMove);
+                return moves;
             }
         }
         return moves;
@@ -193,7 +192,6 @@ public class RegularFinder implements Finder{
         byte[] enemiesArray = new byte[availableSurroundings.length];
         int arrayPointer = 0;
         for(byte b : availableSurroundings){
-            //System.out.println("content of the tested box : "+ board[b]);
             if(positive){
                 if(board[b] < 0){
                     enemiesArray[arrayPointer] = b;

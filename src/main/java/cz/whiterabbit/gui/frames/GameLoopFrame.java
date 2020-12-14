@@ -565,7 +565,7 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
             List<byte[]> moves = gameController.getAllValidMoves();
             List<byte[]> correspondingMoves = new ArrayList<>();
             for (byte[] by : moves) {
-                if (by[0] == validMove[0] && by[by.length - 3] == validMove[validMove.length - 3]) {
+                if (by[0] == validMove[0] && by[by.length - 3] == validMove[1]) {
                     correspondingMoves.add(by);
                 }
             }
@@ -601,46 +601,46 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
      * @param move
      * @return
      */
-    private byte[] validateMove(String move) {
+    protected byte[] validateMove(String move) {
         move = move.toLowerCase();
         char[] validDigits = "12345678".toCharArray();
         char[] validChars = "abcdefgh".toCharArray();
-        String[] split = move.split("\s+");
-        byte[] converted = new byte[split.length * 3];
-        int arrayPointer = 0;
-        for (String s : split) {
-            if (s.length() != 2) return null;
-            int digit = -1;
-            int character = -1;
-            for (int i = 0; i < s.length(); i++) {
-                char c = s.charAt(i);
-                for (int j = 0; j < 8; j++) {
-                    if (c == validDigits[j]) {
-                        digit = j;
-                        break;
-                    }
-                    if (c == validChars[j]) {
-                        character = j;
-                        break;
-                    }
-                }
-            }
 
-            //todo this method can be separated - refactor after unit testing
-            //System.out.println("digit: " + digit + " character: " +character);
+        String[] split = move.split("\s+");
+
+        byte[] converted = new byte[split.length];
+        int arrayPointer = 0;
+
+        for (String s : split) {
+            int digit = findFromCharSet(s, validDigits);
+            int character = findFromCharSet(s, validChars);
+
             if (digit != -1 && character != -1) {
-                byte placeOnBoar = (byte) ((digit * 8 + character));
-                converted[arrayPointer] = placeOnBoar;
-                arrayPointer++;
-                converted[arrayPointer] = gameController.getBoardArr()[placeOnBoar];
-                arrayPointer++;
-                converted[arrayPointer] = 0;
+                converted[arrayPointer] = (byte) ((digit * 8 + character));
                 arrayPointer++;
             } else {
                 return null;
             }
         }
         return converted;
+    }
+
+    /**
+     * Helper method, if given string contains character from given set, return index of the character. Else return -1;
+     * @param toSearch  String to search in;
+     * @param set Set of searched characters
+     * @return
+     */
+    private int findFromCharSet(String toSearch, char[] set){
+        if(toSearch.length() != 2) return -1;
+        for(char c : toSearch.toCharArray()){
+            for(int i = 0; i< set.length; i++){
+                if(c == set[i]){
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     public void startNewGame() {
