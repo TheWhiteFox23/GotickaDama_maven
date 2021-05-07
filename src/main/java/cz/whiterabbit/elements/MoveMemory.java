@@ -70,4 +70,12 @@ public class MoveMemory {
         }
         return null;
     }
+
+    public List<byte[]> getRedoList() {
+        return redoList;
+    }
+
+    public void setRedoList(List<byte[]> redoList) {
+        this.redoList = redoList;
+    }
 }

@@ -3,7 +3,9 @@ package cz.whiterabbit.elements;
 import cz.whiterabbit.elements.movegenerator.MostCaptureEnemiesFilter;
 import cz.whiterabbit.elements.movegenerator.MoveGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GameController {
     private Board board;
@@ -36,19 +38,15 @@ public class GameController {
     }
 
     //tested
-    public void applyMove(byte[] move) throws InvalidMoveException {
+    public void applyMove(byte[] move) {
         applyMove(board.getBoardArr(), move);
     }
 
-    public void applyMove(byte[] board, byte[] move) throws InvalidMoveException {
-        if(isValidMove(move)){
-            board = this.board.applyMove(board, move);
-            judge.validateBoard(board);
-            moveMemory.addMove(move);
-            moveMemory.invalidateMemory();
-        }else{
-            throw new InvalidMoveException();
-        }
+    public void applyMove(byte[] board, byte[] move) {
+        board = this.board.applyMove(board, move);
+        judge.validateBoard(board);
+        moveMemory.addMove(move);
+        moveMemory.invalidateMemory();
     }
 
     public void switchPlayerType(){
@@ -59,6 +57,17 @@ public class GameController {
     //tested
     public List<byte[]> getAllValidMoves(){
         return getAllValidMoves( board.getBoardArr(), playerType);
+    }
+
+    public List<byte[]> getAllValidMovesFromPosition(int position){
+        List<byte[]> validMoves = getAllValidMoves();
+        List<byte[]> movesFromPosition = new ArrayList<>();
+        validMoves.iterator().forEachRemaining(m -> {
+            if(m[0] == position){
+                movesFromPosition.add(m);
+            }
+        });
+        return movesFromPosition;
     }
 
     public boolean canContinue(){
@@ -143,6 +152,7 @@ public class GameController {
         if(move != null){
             board.applyMove(move);
             judge.validateBoard(board);
+            moveMemory.invalidateMemory();
             return true;
         }
         return false;
@@ -152,6 +162,14 @@ public class GameController {
         byte[] reversedMove = reverseMove(move);
         board.applyMove(reversedMove);
         judge.validateBoard(board);
+        moveMemory.invalidateMemory();
+    }
+
+    private byte[] applyReverseMove(byte[] board, byte[] move){
+        byte[] reversedMove = reverseMove(move);
+        board = applyMoveToTheBoard(board, reversedMove);
+        judge.validateBoard(board);
+        return board;
     }
 
     private byte[] reverseMove(byte[] move) {
@@ -173,6 +191,49 @@ public class GameController {
             return moveList.get(moveList.size()-1);
         }else{
             return new byte[0];
+        }
+    }
+
+    public byte[] applyMoveToTheBoard(byte[] board, byte[] move){
+        byte[] modifiedBoard = new byte[board.length];
+        System.arraycopy(board, 0, modifiedBoard,0, modifiedBoard.length);
+        for(int i = 0; i< move.length; i+=3){
+            modifiedBoard[move[i]] = move[i+2];
+        }
+        return  modifiedBoard;
+    }
+
+    public byte[] getBoardFromHistory(int numberOfSteps){
+        if(numberOfSteps <= moveMemory.getMovesHistory().size() && numberOfSteps>=0){
+            byte[] boardToReverse = getBoardArr();
+            for (int i = 0; i < numberOfSteps; i++) {
+                byte[] moveToApply = moveMemory.getMovesHistory().get(moveMemory.getMovesHistory().size() - (1 + i));
+                boardToReverse = applyReverseMove(boardToReverse, moveToApply);
+            }
+            return boardToReverse;
+        }else if(numberOfSteps <0 && numberOfSteps >= -moveMemory.getRedoList().size()){
+            System.out.println("Getting move from redo list");
+            byte[] boardToForward = getBoardArr();
+            for (int i = 0; i < Math.abs(numberOfSteps); i++) {
+                byte[] moveToApply = moveMemory.getRedoList().get(moveMemory.getRedoList().size() - (1 + i));
+                boardToForward = applyMoveToTheBoard(boardToForward, moveToApply);
+            }
+            return boardToForward;
+        }else{
+            return new byte[0];
+        }
+    }
+
+    public void returnToHistory(int undoIndex) {
+        if(undoIndex > 0){
+            for(int i = 0; i< undoIndex; i++){
+                undo();
+            }
+        }else if(undoIndex < 0){
+            for(int i = 0; i< Math.abs(undoIndex); i++){
+                redo();
+            }
+
         }
 
     }

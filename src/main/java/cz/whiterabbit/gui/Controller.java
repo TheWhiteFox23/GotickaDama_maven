@@ -1,9 +1,9 @@
 package cz.whiterabbit.gui;
 
+import cz.whiterabbit.elements.Board;
 import cz.whiterabbit.elements.GameController;
-import cz.whiterabbit.elements.InvalidMoveException;
 import cz.whiterabbit.gui.swing.PlayBoard;
-import cz.whiterabbit.gui.swing.PlayBoardListener;
+import cz.whiterabbit.gui.swing.listeners.PlayBoardListener;
 import cz.whiterabbit.gui.swing.SidePanel;
 
 import javax.swing.*;
@@ -18,6 +18,12 @@ import java.util.List;
  * Link between gameController and GUI. Create frame of the game and manage all of the comunication
  */
 public class Controller {
+    //MOVE CALCULATION
+    private Board board;
+    private byte[] moveToConfirm;
+    private byte[] redoMove;
+
+
     //CONTROLS
     private JButton confirmButton;
     private JButton undoButton;
@@ -37,6 +43,8 @@ public class Controller {
     private int moveStart = -1;
 
     public Controller() throws FileNotFoundException {
+        board = new Board();
+
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -76,7 +84,15 @@ public class Controller {
                     if (moveStart == -1) {
                         initializeMove(field, frame);
                     } else {
-                        finishMoveAndCancelSelection(field, frame);
+                        byte[] finishingMove = getFinishingMove(field);
+                        if(finishingMove != null){
+                            finishMove(finishingMove);
+                        }
+                        //release move initialize
+                        moveStart = -1;
+                        playBoard.setHighlightFields(new int[0]);
+                        playBoard.setLandingHighlight(new int[0]);
+                        frame.repaint();
                     }
                 }
             }
@@ -93,8 +109,13 @@ public class Controller {
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gameController.applyMove(moveToConfirm);
+                playBoard.setBoard(gameController.getBoardArr());
                 confirmButton.setEnabled(false);
                 moveMade = false;
+                gameController.switchPlayerType();
+                moveToConfirm = null;
+                redoMove = null;
             }
         });
         undoButton.addActionListener(new ActionListener() {
@@ -113,45 +134,40 @@ public class Controller {
     }
 
     private void undo() {
-        if(gameController.undo()){
+        if(moveToConfirm != null){
             playBoard.setBoard(gameController.getBoardArr());
-            frame.repaint();
+            redoMove = moveToConfirm;
+            moveToConfirm = null;
+            moveMade = false;
+        }else if(gameController.undo()){
+            playBoard.setBoard(gameController.getBoardArr());
             moveMade = false;
             gameController.switchPlayerType();
             sidePanel.setPlayerOnMove(gameController.isPlayerType());
         }
+        frame.repaint();
     }
 
     private void redo(){
-        if(gameController.redo()){
+        if(redoMove != null){
+            playBoard.setBoard(board.applyMove(playBoard.getBoard(), redoMove));
+            moveToConfirm = redoMove;
+            redoMove = null;
+            moveMade = false;
+        }else if(gameController.redo()){
             playBoard.setBoard(gameController.getBoardArr());
-            frame.repaint();
             moveMade = false;
             gameController.switchPlayerType();
             sidePanel.setPlayerOnMove(gameController.isPlayerType());
         }
-    }
-
-    private void finishMoveAndCancelSelection(int field, JFrame frame) {
-        byte[] finishingMove = getFinishingMove(field);
-        if(finishingMove != null)finishMove(finishingMove);
-        playBoard.setLandingHighlight(new int[0]);
-        playBoard.setStartHighlight(-1);
-        moveStart = -1;
         frame.repaint();
-        gameController.switchPlayerType();
-        sidePanel.setPlayerOnMove(gameController.isPlayerType());
     }
 
-    private void finishMove(byte[] by) {
-        try {
-            gameController.applyMove(by);
-            playBoard.setBoard(gameController.getBoardArr());
-            moveMade = true;
-            confirmButton.setEnabled(true);
-        } catch (InvalidMoveException e) {
-            e.printStackTrace();
-        }
+    private void finishMove(byte[] by){
+        moveToConfirm = by;
+        playBoard.setBoard(board.applyMove(playBoard.getBoard(), moveToConfirm));
+        moveMade = true;
+        confirmButton.setEnabled(true);
     }
 
     private void initializeMove(int field, JFrame frame) {

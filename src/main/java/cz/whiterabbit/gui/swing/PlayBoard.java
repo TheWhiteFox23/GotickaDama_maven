@@ -1,5 +1,7 @@
 package cz.whiterabbit.gui.swing;
 
+import cz.whiterabbit.gui.swing.listeners.PlayBoardListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -8,7 +10,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //TODO make board peaces be always square
 public class PlayBoard extends JComponent {
@@ -24,9 +28,9 @@ public class PlayBoard extends JComponent {
     private Color figurePrimaryLight = new Color(224,226,244);
     private Color figurePrimaryDark = new Color(66,70,112);
     private Color figureSecondaryDark = new Color(52,56,92);
-    private Color highLight = new Color(154,198,134);
-    private Color landingHighlightColor =  new Color(198,135,135);
-    private Color startHighlightColor =  new Color(198,194,135);
+    public static Color HIGHLIGHT_STEP = new Color(154,198,134);
+    public static Color HIGHLIGHT_LANDING =  new Color(198,135,135);
+    public static Color HIGHLIGHT_START =  new Color(198,194,135);
 
     private byte[] board = new byte[]{
              2, 2, 2, 2, 2, 2, 2, 2,
@@ -46,8 +50,11 @@ public class PlayBoard extends JComponent {
     private int[] landingHighlight;
     private int startHighlight = -1;
 
+    private Map<Integer, Color> highlights;
+
     public PlayBoard(){
         playBoardListeners = new ArrayList<>();
+        highlights =  new HashMap<>();
         initializeListeners();
     }
 
@@ -134,12 +141,8 @@ public class PlayBoard extends JComponent {
         for(int i = 0; i< 8; i++){
             for(int j = 0; j< 8; j++){
                 Shape square = new Rectangle2D.Float(j*squareWidth, i*squareHeight, squareWidth, squareHeight);
-                if(startHighlight == j+(i*8)){
-                    g2d.setColor(startHighlightColor);
-                }else if(contains(j+(i*8), landingHighlight)){
-                    g2d.setColor(landingHighlightColor);
-                }else if(contains(j+(i*8), highlightFields)){
-                    g2d.setColor(highLight);
+                if(highlights.containsKey(j+(i*8))){
+                    g2d.setColor(highlights.get(j+(i*8)));
                 }else if((i+j)%2 == 0){
                     g2d.setColor(boardLightColor);
                 }else {
@@ -259,4 +262,13 @@ public class PlayBoard extends JComponent {
     public void setStartHighlight(int startHighlight) {
         this.startHighlight = startHighlight;
     }
+
+    public void addHighlight(int field, Color color){
+        highlights.put(field, color);
+    }
+
+    public void clearHighlights(){
+        highlights.clear();
+    }
+
 }

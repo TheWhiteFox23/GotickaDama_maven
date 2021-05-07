@@ -1,5 +1,7 @@
 package cz.whiterabbit.gui.swing;
 
+import cz.whiterabbit.gui.swing.listeners.ButtonsPanelListener;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +22,7 @@ public class ButtonsPanel extends JPanel {
     private GeneralSidePanelButton saveButton;
     private GeneralSidePanelButton loadButton;
 
-    public ButtonsPanel() throws FileNotFoundException {
+    public ButtonsPanel(){
         initializeButton();
         initializeListeners();
         layoutComponents();

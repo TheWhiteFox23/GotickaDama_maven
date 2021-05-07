@@ -1,10 +1,16 @@
 package cz.whiterabbit.gui.swing;
 
+import cz.whiterabbit.gui.swing.listeners.ButtonsPanelListener;
+import cz.whiterabbit.gui.swing.listeners.SidePanelListener;
+
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SidePanel extends JPanel {
+    List<SidePanelListener> sidePanelListeners;
+
     private Color bgColor = new Color(224,226,244);
     protected Dimension arcs = new Dimension(30, 30);
 
@@ -18,7 +24,9 @@ public class SidePanel extends JPanel {
 
     private PanelType activePanel;
 
-    public SidePanel() throws FileNotFoundException {
+    public SidePanel()  {
+        sidePanelListeners = new ArrayList<>();
+
         buttonsPanel = new ButtonsPanel();
 
         settingsPanel = new JPanel();
@@ -53,26 +61,31 @@ public class SidePanel extends JPanel {
             @Override
             public void onInfoClicked() {
                 manageActivePanelChange(PanelType.infoPanel);
+                sidePanelListeners.iterator().forEachRemaining(l -> l.onInfoClicked());
             }
 
             @Override
             public void onSettingsClicked() {
                 manageActivePanelChange(PanelType.settingsPanel);
+                sidePanelListeners.iterator().forEachRemaining(l -> l.onSettingsClicked());
             }
 
             @Override
             public void onHistoryClicked() {
                 manageActivePanelChange(PanelType.historyPanel);
+                sidePanelListeners.iterator().forEachRemaining(l -> l.onHistoryClicked());
             }
 
             @Override
             public void onSaveClicked() {
                 manageActivePanelChange(PanelType.savePanel);
+                sidePanelListeners.iterator().forEachRemaining(l -> l.onSaveClicked());
             }
 
             @Override
             public void onLoadClicked() {
                 manageActivePanelChange(PanelType.loadPanel);
+                sidePanelListeners.iterator().forEachRemaining(l -> l.onLoadClicked());
             }
         });
     }
@@ -133,6 +146,10 @@ public class SidePanel extends JPanel {
 
     public void setPlayerOnMove(boolean playerOnMove){
         infoPanel.setPlayerOnMove(playerOnMove);
+    }
+
+    public void addPanelListener(SidePanelListener panelListener){
+        sidePanelListeners.add(panelListener);
     }
 
 }

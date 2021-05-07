@@ -317,14 +317,11 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
     }
 
     private void applyPlayerMove(ComputerPlayer computerPlayer) {
-        try {
-            byte[] move = computerPlayer.chooseMove(gameController.getBoardArr(), gameController.isPlayerType());
-            lastMove = move;
-            highlightMove = true;
-            gameController.applyMove(move);
-        } catch (InvalidMoveException e) {
-            e.printStackTrace();
-        }
+        byte[] move = computerPlayer.chooseMove(gameController.getBoardArr(), gameController.isPlayerType());
+        lastMove = move;
+        highlightMove = true;
+        gameController.applyMove(move);
+
         continueGame = false;
         invalidate();
     }
@@ -381,17 +378,12 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
                 selectedIndex = (selectedIndex+1)%movesList.size();
                 invalidate();
                 //System.out.println("selected index: " + selectedIndex + " object: " +movesList.get(selectedIndex));
-            }else if(keyStroke.getKeyType() == KeyType.Enter){
-                try {
-                    gameController.applyMove(movesList.get(selectedIndex));
-                    insertMoveAvailable = false;
-                    multipleMoveSelection = false;
-                    getScreen().clear();
-                    invalidate();
-                } catch (InvalidMoveException e) {
-                    e.printStackTrace();
-                }
-                //todo add confirm move logic
+            } else if (keyStroke.getKeyType() == KeyType.Enter) {
+                gameController.applyMove(movesList.get(selectedIndex));
+                insertMoveAvailable = false;
+                multipleMoveSelection = false;
+                getScreen().clear();
+                invalidate();
             }
         }
     }
@@ -606,13 +598,9 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
                 }
             }
             if (correspondingMoves.size() == 1) {
-                try {
-                    gameController.applyMove(correspondingMoves.get(0));
-                    errorTextVisible = false;
-                    lastMove = correspondingMoves.get(0);
-                } catch (InvalidMoveException e) {
-                    e.printStackTrace();
-                }
+                gameController.applyMove(correspondingMoves.get(0));
+                errorTextVisible = false;
+                lastMove = correspondingMoves.get(0);
                 return true;
             } else if (correspondingMoves.size() == 0) {
                 errorTextVisible = true;

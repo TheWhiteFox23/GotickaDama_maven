@@ -100,11 +100,7 @@ class GameControllerTest {
         @DisplayName("Move applied")
         void moveApplied(){
             gameController.startGame();
-            try{
-                gameController.applyMove(new byte[] {8,1,0,16,0,1});
-            }catch (InvalidMoveException e){
-                System.out.println(e.toString());
-            }
+            gameController.applyMove(new byte[] {8,1,0,16,0,1});
             assertArrayEquals(gameController.getBoard().getBoardArr(), new byte[]{
                      1, 1, 1, 1, 1, 1, 1, 1,
                      0, 1, 1, 1, 1, 1, 1, 1,
@@ -120,11 +116,8 @@ class GameControllerTest {
         @DisplayName("Move is in memory")
         void moveInMemory(){
             gameController.startGame();
-            try{
-                gameController.applyMove(new byte[] {8,1,0,16,0,1});
-            }catch (InvalidMoveException e){
-                System.out.println(e.toString());
-            }
+            gameController.applyMove(new byte[] {8,1,0,16,0,1});
+
             List<byte[]> expected = new ArrayList<>();
             expected.add(new byte[] {8,1,0,16,0,1});
             compareLists(gameController.getMoveMemory().getMovesHistory(), expected);
@@ -134,11 +127,8 @@ class GameControllerTest {
         @DisplayName("Memory invalidated")
         void memoryInvalidated(){
             gameController.startGame();
-            try{
-                gameController.applyMove(new byte[] {8,1,0,16,0,1});
-            }catch (InvalidMoveException e){
-                System.out.println(e.toString());
-            }
+            gameController.applyMove(new byte[] {8,1,0,16,0,1});
+
             assertFalse(gameController.getMoveMemory().isValid());
         }
 
@@ -149,11 +139,8 @@ class GameControllerTest {
             gameController.switchPlayerType();
             gameController.getBoard().setBoard(testBoards.getValidateBoardAfterMove());
             gameController.getMoveMemory().invalidateMemory();
-            try {
-                gameController.applyMove(new byte[]{8,-1,0,0,0,-1});
-            } catch (InvalidMoveException e) {
-                e.printStackTrace();
-            }
+            gameController.applyMove(new byte[]{8,-1,0,0,0,-1});
+
             assertArrayEquals(gameController.getBoard().getBoardArr(), new byte[]{
                     -2, 1, 1, 1, 1, 1, 0, 1,
                     0, 1, 1, 1, 1, 1, 0, 1,
@@ -266,24 +253,18 @@ class GameControllerTest {
         void simpleMovesJumps(){
             //StartGame firstROW
             gameController.startGame();
-            try {
-                gameController.applyMove(new byte[]{8,1,0,16,0,1});
-                gameController.switchPlayerType();
-                gameController.applyMove(new byte[]{52,-1,0,44,0,-1});
-                gameController.switchPlayerType();
-                gameController.applyMove(new byte[]{16,1,0,25,0,1});
-                gameController.switchPlayerType();
-                gameController.applyMove(new byte[]{44,-1,0,43,0,-1});
-                gameController.switchPlayerType();
-                gameController.applyMove(new byte[]{25,1,0,34,0,1});
-                gameController.switchPlayerType();
-                gameController.applyMove(new byte[]{43,-1,0,34,1,0,25,0,-1});
-                gameController.switchPlayerType();
-
-                //check board state
-            }catch (InvalidMoveException e){
-                System.out.println(e.toString());
-            }
+            gameController.applyMove(new byte[]{8, 1, 0, 16, 0, 1});
+            gameController.switchPlayerType();
+            gameController.applyMove(new byte[]{52, -1, 0, 44, 0, -1});
+            gameController.switchPlayerType();
+            gameController.applyMove(new byte[]{16, 1, 0, 25, 0, 1});
+            gameController.switchPlayerType();
+            gameController.applyMove(new byte[]{44, -1, 0, 43, 0, -1});
+            gameController.switchPlayerType();
+            gameController.applyMove(new byte[]{25, 1, 0, 34, 0, 1});
+            gameController.switchPlayerType();
+            gameController.applyMove(new byte[]{43, -1, 0, 34, 1, 0, 25, 0, -1});
+            gameController.switchPlayerType();
 
             assertTrue(gameController.canContinue());
             assertArrayEquals(gameController.getBoard().getBoardArr(), new byte[]{
@@ -305,21 +286,16 @@ class GameControllerTest {
             gameController.startGame();
             gameController.getBoard().setBoard(testBoards.getFinishGame());
             gameController.getMoveMemory().invalidateMemory();
-            try{
-                gameController.applyMove(new byte[]{1,1,0,9,0,1});
-                gameController.switchPlayerType();
-                //gameController.getAllValidMoves();
-                assertThrows(InvalidMoveException.class, ()->gameController.applyMove(new byte[]{48,1,0,40,0,0}));
-                gameController.applyMove(new byte[]{8,-1,0,9,1,0,10,0,-1});
-                gameController.switchPlayerType();
-                gameController.applyMove(new byte[]{35,1,0,43,0,1});
-                gameController.switchPlayerType();
-                gameController.applyMove(new byte[]{51,-1,0,43,1,0,35,0,-1});
-                assertFalse(gameController.canContinue());
-
-            }catch (InvalidMoveException e){
-                System.out.println(e.toString());
-            }
+            gameController.applyMove(new byte[]{1, 1, 0, 9, 0, 1});
+            gameController.switchPlayerType();
+            //gameController.getAllValidMoves();
+            assertThrows(InvalidMoveException.class, () -> gameController.applyMove(new byte[]{48, 1, 0, 40, 0, 0}));
+            gameController.applyMove(new byte[]{8, -1, 0, 9, 1, 0, 10, 0, -1});
+            gameController.switchPlayerType();
+            gameController.applyMove(new byte[]{35, 1, 0, 43, 0, 1});
+            gameController.switchPlayerType();
+            gameController.applyMove(new byte[]{51, -1, 0, 43, 1, 0, 35, 0, -1});
+            assertFalse(gameController.canContinue());
         }
 
         @Test
@@ -356,15 +332,12 @@ class GameControllerTest {
             gameController.getMoveMemory().addMove(new byte[]{8,1,0,16,0,1});
             gameController.getBoard().setBoard(testBoards.getNoMovesFinish());
             gameController.getMoveMemory().invalidateMemory();
-            try{
-                gameController.applyMove(new byte[]{8,1,0,16,0,1});
-                gameController.switchPlayerType();
-                gameController.applyMove(new byte[]{48,-1,0,40,0,-1});
-                assertFalse(gameController.canContinue());
-                assertEquals(gameController.gameState, GameState.NEGATIVE_WIN);
-            }catch (InvalidMoveException e){
-                System.out.println(e.toString());
-            }
+
+            gameController.applyMove(new byte[]{8, 1, 0, 16, 0, 1});
+            gameController.switchPlayerType();
+            gameController.applyMove(new byte[]{48, -1, 0, 40, 0, -1});
+            assertFalse(gameController.canContinue());
+            assertEquals(gameController.gameState, GameState.NEGATIVE_WIN);
 
         }
     }
