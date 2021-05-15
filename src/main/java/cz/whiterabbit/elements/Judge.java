@@ -175,4 +175,18 @@ public class Judge {
         }
         return new int[]{negativeCount, positiveCount};
     }
+
+    public int getRoundsWithoutCapture(){
+        int count = 0;
+        if(moveMemory != null){
+            for(int i = moveMemory.getMovesHistory().size()-1; i>=0; i--){
+                if(moveMemory.getMovesHistory().get(i).length != 6){
+                    return count;
+                }else{
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 }

@@ -1,4 +1,4 @@
-package cz.whiterabbit.gui.swing.listeners;
+package cz.whiterabbit.gui.swing.sidePanel.listeners;
 
 public interface ButtonsPanelListener {
     void onInfoClicked();

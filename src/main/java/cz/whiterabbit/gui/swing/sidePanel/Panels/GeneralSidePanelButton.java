@@ -1,4 +1,4 @@
-package cz.whiterabbit.gui.swing;
+package cz.whiterabbit.gui.swing.sidePanel.Panels;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 
 public class GeneralSidePanelButton extends JButton {
     private Color basicColor = new Color(224,226,244);
-    private Color focusColor = new Color(66,70,112);
+    private Color focusColor = new Color(134, 139, 198);
 
     private Icon icon;
     private Icon selectedIcon;

@@ -1,5 +1,6 @@
 package cz.whiterabbit.gui.swing;
 
+import cz.whiterabbit.gui.swing.customComponents.CustomButton;
 import cz.whiterabbit.gui.swing.listeners.BottomPanelListener;
 
 import javax.swing.*;
@@ -8,18 +9,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BottomPanel extends JPanel {
+
+
     List<BottomPanelListener> panelListeners;
 
-    private JButton confirmButton;
-    private JButton undoButton;
-    private JButton redoButton;
+    private CustomButton confirmButton;
+    private CustomButton undoButton;
+    private CustomButton redoButton;
 
     public BottomPanel(){
         panelListeners = new ArrayList<>();
 
-        confirmButton = new JButton("Confirm");
-        undoButton = new JButton("Undo");
-        redoButton = new JButton("Redo");
+        confirmButton = new CustomButton("Confirm");
+        undoButton = new CustomButton("Undo");
+        redoButton = new CustomButton("Redo");
+
+        setOpaque(false);
+
         layoutComponents();
         initializeListeners();
     }
@@ -41,6 +47,7 @@ public class BottomPanel extends JPanel {
         GridBagConstraints gc = new GridBagConstraints();
         gc.weighty = 1;
         gc.weightx = 1;
+        gc.insets = new Insets(0,10,0,10);
 
         gc.gridx=0;
         gc.weighty =0;

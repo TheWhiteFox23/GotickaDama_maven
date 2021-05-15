@@ -1,6 +1,7 @@
-package cz.whiterabbit.gui.swing;
+package cz.whiterabbit.gui.swing.sidePanel.Panels;
 
-import cz.whiterabbit.gui.swing.listeners.ButtonsPanelListener;
+import cz.whiterabbit.gui.swing.PanelType;
+import cz.whiterabbit.gui.swing.sidePanel.listeners.ButtonsPanelListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -90,7 +91,7 @@ public class ButtonsPanel extends JPanel {
     }
 
     private void initializeButton(){
-        String basePath = "src\\main\\resources\\Icons\\";
+        String basePath = "Icons/";
         gameInfoButton = tryInitializeButton(basePath + "InfoIcon.png", basePath + "InfoIconSelect.png", "info");
         settingsButton = tryInitializeButton(basePath + "SettingsIcon.png", basePath + "SettingsIconSelect.png", "settings");
         historyButton = tryInitializeButton( basePath + "HistoryIcon.png", basePath + "HistoryIconSelect.png", "history");
@@ -100,10 +101,10 @@ public class ButtonsPanel extends JPanel {
 
     private GeneralSidePanelButton tryInitializeButton(String basic, String selected, String failText){
         try{
-            InputStream is = new BufferedInputStream(new FileInputStream(basic));
+            InputStream is =  getClass().getClassLoader().getResourceAsStream(basic);
             Image basicImage = ImageIO.read(is);
             Icon basicIcon = new ImageIcon(basicImage);
-            is = new BufferedInputStream(new FileInputStream(selected));
+            is =  getClass().getClassLoader().getResourceAsStream(selected);
             Image selectedImage = ImageIO.read(is);
             Icon selectedIcon = new ImageIcon(selectedImage);
             return new GeneralSidePanelButton(basicIcon, selectedIcon);

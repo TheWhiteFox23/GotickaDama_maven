@@ -128,13 +128,13 @@ public class PlayBoard extends JComponent {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         //so the board is always square
-        if(getHeight() > getWidth()){
+        /*if(getHeight() > getWidth()){
             setSize(getWidth(), getWidth());
         }else{
             setSize(getHeight(), getHeight());
-        }
+        }*/
         Graphics2D g2d = (Graphics2D) g;
         squareWidth = getWidth()/8.0f;
         squareHeight = getHeight()/8.0f;
@@ -153,10 +153,12 @@ public class PlayBoard extends JComponent {
             }
         }
 
-        super.paint(g);
+        super.paintComponent(g);
     }
 
     private void drawFigure(Graphics g, int type, float x, float y, float width, float height){
+
+
         Color mainColor =  figurePrimaryLight;
         Color secondaryColor = figureSecondaryLight;
         Color centerColor = figurePrimaryLight;

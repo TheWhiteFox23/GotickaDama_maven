@@ -7,13 +7,21 @@ public interface FrameListener {
     void onUndoClicked();
 
     //SidePanel
-    void onHistoryClicked();
-    void onInfoClicked();
-    void onSettingsClicked();
-    void onSaveClicked();
-    void onLoadClicked();
+    void onSaveFileClicked(String filename);
+    void onLoadFileClicked(String filename);
+    void onSettingsConfirm();
+    void onNewGameClicked();
+    void onSuggestMoveClicked();
+    void onRulesClicked();
 
     //PlayBoard
     void onFieldClicked(int field);
     void onFieldSelected(int field);
+
+    //HistoryPanel
+    void onPreviewPressed(int previewIndex);
+    void onPreviewReleased(int previewIndex);
+    void onReverseClicked(int reverseIndex);
+
+
 }

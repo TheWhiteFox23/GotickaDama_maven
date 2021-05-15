@@ -78,4 +78,8 @@ public class MoveMemory {
     public void setRedoList(List<byte[]> redoList) {
         this.redoList = redoList;
     }
+
+    public void setUndoList(List<byte[]> undoList) {
+        this.movesHistory = undoList;
+    }
 }

@@ -18,8 +18,8 @@ public class GameController {
     public GameController() {
         this.board = new Board();
         this.moveGenerator = new MoveGenerator();
-        this.judge = new Judge();
         this.moveMemory = new MoveMemory();
+        this.judge = new Judge(moveMemory, board);
         this.gameState = GameState.NOT_STARTED;
     }
 
@@ -235,6 +235,26 @@ public class GameController {
             }
 
         }
+    }
 
+    public int getTotalRounds(){
+        return moveMemory.getMovesHistory().size();
+    }
+
+    public int getRoundWithoutCapture(){
+        //System.out.println("getRounds");
+        return judge.getRoundsWithoutCapture();
+    }
+
+    public void setRedoList(List<byte[]> redoList){
+        moveMemory.setRedoList(redoList);
+        moveMemory.invalidateMemory();
+    }
+    public void setUndoList(List<byte[]> undoList){
+        moveMemory.setUndoList(undoList);
+    }
+
+    public void setBoardArr(byte[] board){
+        this.board.setBoard(board);
     }
 }
