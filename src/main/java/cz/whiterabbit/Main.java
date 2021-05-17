@@ -1,19 +1,22 @@
 package cz.whiterabbit;
 
-import cz.whiterabbit.gui.GUIController;
+import cz.whiterabbit.gui.Controller;
 
-import java.io.IOException;
+import java.io.FileNotFoundException;
 
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+        new Controller();
 
-        try {
+
+
+        /*try {
             GUIController guiController = new GUIController();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
     }

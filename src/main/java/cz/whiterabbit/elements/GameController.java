@@ -23,7 +23,6 @@ public class GameController {
 
     //TESTED
     public void startGame(){
-        //System.out.println("START GAME CALL");
         resetGame();
         gameState = GameState.IN_PROGRESS;
     }
@@ -83,11 +82,11 @@ public class GameController {
         return gameState;
     }
 
-    protected Board getBoard() {
+    public Board getBoard() {
         return board;
     }
 
-    protected MoveMemory getMoveMemory() {
+    public MoveMemory getMoveMemory() {
         return moveMemory;
     }
 
@@ -95,7 +94,7 @@ public class GameController {
         return playerType;
     }
 
-    protected void setPlayerType(boolean playerType) {
+    public void setPlayerType(boolean playerType) {
         this.playerType = playerType;
     }
 
@@ -120,5 +119,61 @@ public class GameController {
             moveMemory.setCurrentPossibleMoves(moveGenerator.getAllMovesForPlayer(playerType, board, new MostCaptureEnemiesFilter()));
         }
         return moveMemory.getCurrentPossibleMoves();
+    }
+
+    public void setMoveMemory(MoveMemory moveMemory) {
+        this.moveMemory = moveMemory;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public boolean undo(){
+        byte[] move = moveMemory.undo();
+        if(move != null){
+            applyReverseMove(move);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean redo(){
+        byte[] move = moveMemory.redo();
+        if(move != null){
+            board.applyMove(move);
+            judge.validateBoard(board);
+            return true;
+        }
+        return false;
+    }
+
+    private void applyReverseMove(byte[] move){
+        byte[] reversedMove = reverseMove(move);
+        board.applyMove(reversedMove);
+        judge.validateBoard(board);
+    }
+
+    private byte[] reverseMove(byte[] move) {
+        byte[] moveCopy = new byte[move.length];
+        System.arraycopy(move, 0, moveCopy, 0, move.length);
+        int index = 0;
+        for(int i = move.length -3; i>=0; i-=3){
+            moveCopy[index] = move[i];
+            moveCopy[index+1] = move[i+2];
+            moveCopy[index+2] = move[i+1];
+            index+=3;
+        }
+        return moveCopy;
+    }
+
+    public byte[] getLastMove(){
+        List<byte[]> moveList = moveMemory.getMovesHistory();
+        if(moveList.size()>0) {
+            return moveList.get(moveList.size()-1);
+        }else{
+            return new byte[0];
+        }
+
     }
 }

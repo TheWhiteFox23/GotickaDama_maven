@@ -27,7 +27,7 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
     private void initMenu() {
         //White Operator
         LanternaMenuItem whiteOperator = new LanternaMenuItem("X player operator", 2, 5, 0);
-        whiteOperator.setToggleMenuItem(new LanternaToggleMenuItem(30, 5, new ArrayList<>() {{
+        whiteOperator.setToggleMenuItem(new LanternaToggleMenuItem(30, 5, new ArrayList<String>() {{
             add("PLAYER");
             add("COMPUTER_MINIMAX");
             add("COMPUTER_RANDOM");
@@ -40,7 +40,7 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
         addMenuItem(whiteOperator);
 
         LanternaMenuItem whiteDifficulty = new LanternaMenuItem("X player difficulty", 2, 6, 1);
-        whiteDifficulty.setToggleMenuItem(new LanternaToggleMenuItem(30, 6, new ArrayList<>() {{
+        whiteDifficulty.setToggleMenuItem(new LanternaToggleMenuItem(30, 6, new ArrayList<String>() {{
             add("EASY");
             add("MEDIUM");
             add("HARD");
@@ -53,7 +53,7 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
         addMenuItem(whiteDifficulty);
 
         LanternaMenuItem blackOperator = new LanternaMenuItem("O player operator", 2, 10, 2);
-        blackOperator.setToggleMenuItem(new LanternaToggleMenuItem(30, 10, new ArrayList<>() {{
+        blackOperator.setToggleMenuItem(new LanternaToggleMenuItem(30, 10, new ArrayList<String>() {{
             add("PLAYER");
             add("COMPUTER_MINIMAX");
             add("COMPUTER_RANDOM");
@@ -66,7 +66,7 @@ public class SettingsFrame extends LanternaFrame implements GUIFrame {
         addMenuItem(blackOperator);
 
         LanternaMenuItem blackDifficulty = new LanternaMenuItem("O player difficulty", 2, 11, 3);
-        blackDifficulty.setToggleMenuItem(new LanternaToggleMenuItem(30, 11, new ArrayList<>() {{
+        blackDifficulty.setToggleMenuItem(new LanternaToggleMenuItem(30, 11, new ArrayList<String>() {{
             add("EASY");
             add("MEDIUM");
             add("HARD");

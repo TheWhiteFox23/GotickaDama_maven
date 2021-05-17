@@ -92,10 +92,22 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
         if (gameController.canContinue()) {
             frameState = getFrameState();
             switch (frameState) {
-                case INPUT_MENU -> drawInputMenu();
-                case PLAYER_MENU -> drawPlayerMenu();
-                case COMPUTER_MENU -> drawComputerMenu();
-                case MOVE_SELECTION_MENU -> drawMoveSelectionMenu();
+                case INPUT_MENU :{
+                    drawInputMenu();
+                    break;
+                }
+                case PLAYER_MENU :{
+                    drawPlayerMenu();
+                    break;
+                }
+                case COMPUTER_MENU :{
+                    drawComputerMenu();
+                    break;
+                }
+                case MOVE_SELECTION_MENU :{
+                    drawMoveSelectionMenu();
+                    break;
+                }
             }
             if (continueGame) {
                 manageMoveInput(gameController.isPlayerType());
@@ -104,9 +116,18 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
         } else {
             frameState = getFrameState();
             switch (gameController.getGameState()) {
-                case DRAW -> drawFinishMenu("DRAW");
-                case POSITIVE_WIN -> drawFinishMenu("PLAYER X WINS");
-                case NEGATIVE_WIN -> drawFinishMenu("PLAYER O WINS");
+                case DRAW :{
+                    drawFinishMenu("DRAW");
+                    break;
+                }
+                case POSITIVE_WIN :{
+                    drawFinishMenu("PLAYER X WINS");
+                    break;
+                }
+                case NEGATIVE_WIN :{
+                    drawFinishMenu("PLAYER O WINS");
+                    break;
+                }
             }
         }
         if (lastMove!= null) drawBoard(2, 1, lastMove);
@@ -318,11 +339,26 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
             e.printStackTrace();
         }
         switch (frameState) {
-            case INPUT_MENU -> listenToInputMenu(keyStroke);
-            case PLAYER_MENU -> listenToPlayerMenu(keyStroke);
-            case COMPUTER_MENU -> listenToComputerMenu(keyStroke);
-            case GAME_FINISH -> listenToGameFinishMenu(keyStroke);
-            case MOVE_SELECTION_MENU -> listenToMoveSelectionMenu(keyStroke);
+            case INPUT_MENU :{
+                listenToInputMenu(keyStroke);
+                break;
+            }
+            case PLAYER_MENU :{
+                listenToPlayerMenu(keyStroke);
+                break;
+            }
+            case COMPUTER_MENU :{
+                listenToComputerMenu(keyStroke);
+                break;
+            }
+            case GAME_FINISH :{
+                listenToGameFinishMenu(keyStroke);
+                break;
+            }
+            case MOVE_SELECTION_MENU :{
+                listenToMoveSelectionMenu(keyStroke);
+                break;
+            }
         }
     }
 
@@ -606,7 +642,8 @@ public class GameLoopFrame extends LanternaFrame implements GUIFrame {
         char[] validDigits = "12345678".toCharArray();
         char[] validChars = "abcdefgh".toCharArray();
 
-        String[] split = move.split("\s+");
+        String[] split;
+        split = move.split("\\s+");
 
         byte[] converted = new byte[split.length];
         int arrayPointer = 0;

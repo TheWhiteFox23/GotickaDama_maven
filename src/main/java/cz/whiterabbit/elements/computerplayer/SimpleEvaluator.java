@@ -14,10 +14,22 @@ public class SimpleEvaluator implements StateEvaluator{
         int evaluation = 0;
         for(byte b: state){
             switch (b){
-                case 1-> evaluation += 25;
-                case 2-> evaluation += 100;
-                case -1 -> evaluation -= 25;
-                case -2 -> evaluation -= 100;
+                case 1 :{
+                    evaluation += 25;
+                    break;
+                }
+                case 2 :{
+                    evaluation += 100;
+                    break;
+                }
+                case -1 :{
+                    evaluation -= 25;
+                    break;
+                }
+                case -2 :{
+                    evaluation -= 100;
+                    break;
+                }
             }
         }
         return evaluation;

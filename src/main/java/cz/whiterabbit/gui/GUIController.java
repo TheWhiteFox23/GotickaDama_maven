@@ -58,9 +58,18 @@ public class GUIController {
         screen.clear();
         try{
             switch (gameFrame){
-                case GAME_FRAME -> gameLoopFrame.drawFrame();
-                case SETTINGS_FRAME -> settingsFrame.drawFrame();
-                case MAIN_MENU_FRAME -> menuFrame.drawFrame();
+                case GAME_FRAME :{
+                    gameLoopFrame.drawFrame();
+                    break;
+                }
+                case SETTINGS_FRAME :{
+                    settingsFrame.drawFrame();
+                    break;
+                }
+                case MAIN_MENU_FRAME :{
+                    menuFrame.drawFrame();
+                    break;
+                }
             }
         }catch (IOException e){
             System.out.println("Unable to draw the frame :" + e.toString());

@@ -12,11 +12,13 @@ public class MenuFrame extends LanternaFrame implements GUIFrame{
 
     //Todo replace with property file
     //Gui text strings
-    private String title = "Gotická dáma";
-    private String hint = "Pro výběr v menu stiskněte odpovídající klávesu";
-    private String menuSettings =   "Nastavení   (S)";
-    private String menuNewGame =    "Nová hra    (N)";
-    private String menuContinue=    "Pokračovat  (P)";
+    private String title = "Gothic Checkers";
+    private String hint = "Press corresponding key to navigate menu";
+    private String menuSettings =   "Settings   (S)";
+    private String menuNewGame =    "New game   (N)";
+    private String menuContinue=    "Continue  (P)";
+    private String menuQuit=        "Quit  (Q)";
+
 
     private GameController gameController;
     public MenuFrame(Screen screen, GameController gameController){
@@ -31,6 +33,7 @@ public class MenuFrame extends LanternaFrame implements GUIFrame{
 
         drawSimpleText(menuSettings, 2, 6);
         drawSimpleText(menuNewGame, 2, 7);
+        drawSimpleText(menuQuit, 2, 8);
         if(gameController.getGameState() == GameState.IN_PROGRESS)drawSimpleText(menuContinue, 2, 8);
     }
 
@@ -52,6 +55,13 @@ public class MenuFrame extends LanternaFrame implements GUIFrame{
                     break;
                 } case 'p':{
                     if(gameController.getGameState() == GameState.IN_PROGRESS) getFrameListener().onContinue();
+                }case 'q':{
+                    try {
+                        getScreen().close();
+                        System.exit(0);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
